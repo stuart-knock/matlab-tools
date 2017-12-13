@@ -9,8 +9,10 @@
 %             intended for use in resetting to a pre-call state.
 %
 %  OUTPUT: 
-%    precall_default_groot -- a  struct containing the default groot values
-%                             before calling this function.
+%    precall_default_groot -- a struct containing default groot values that were
+%                             set before calling this function. When calling with
+%                             a predefined theme (eg. 'dark') you must capture
+%                             this output to be able to undo the changes.
 %
 %  AUTHOR:
 %    Paula Sanz-Leon (2017-12-04).
@@ -20,9 +22,9 @@
 %{
     %% Set a dark theme
     [precall_default_groot] = set_default_groot('dark');
-    
+
     %plot things using this theme
-    
+
     %% Reset to the dafault values from before the first call.
     set_default_groot(precall_default_groot);
 
@@ -59,6 +61,7 @@ function [precall_default_groot] = set_default_groot(theme)
         return
     end
 
+    %% Apply the default groot values for the requested theme.
     switch lower(theme)
         case 'dark'
             %% Set a dark colour theme.
@@ -68,6 +71,9 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultFigureColor', [ 25,  25,  25] ./ 255);
             set(groot, 'defaultTextColor',   [255, 255, 255] ./ 255);
         %TODO: define more themes...
+        otherwise
+            error(['BLN:' mfilename ':UnknownTheme'], ...
+                  'The theme you specified is not recognised: "%s".', theme);
     end
 
 end % function set_default_groot()
