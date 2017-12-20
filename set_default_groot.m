@@ -25,7 +25,7 @@
 
     %plot things using this theme
 
-    %% Reset to the dafault values from before the first call.
+    %% Reset to the default values from before the first call.
     set_default_groot(precall_default_groot);
 
 %}
