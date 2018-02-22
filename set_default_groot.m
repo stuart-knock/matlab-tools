@@ -70,6 +70,22 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultAxesXColor',  [255, 255, 255] ./ 255);
             set(groot, 'defaultFigureColor', [ 25,  25,  25] ./ 255);
             set(groot, 'defaultTextColor',   [255, 255, 255] ./ 255);
+            
+        case 'paper'
+            %% Set a dark colour theme.
+            set(groot, 'defaultAxesColor',   [255, 255, 255] ./ 255);
+            set(groot, 'defaultAxesYColor',  [  0,   0,   0] ./ 255);
+            set(groot, 'defaultAxesXColor',  [  0,   0,   0] ./ 255);
+            set(groot, 'defaultFigureColor', [255, 255, 255] ./ 255);
+            set(groot, 'defaultTextColor',   [  0,   0,   0] ./ 255);
+            set(groot, 'defaultAxesGridAlpha',1);
+            set(groot, 'defaultAxesGridColor',[0.1 0.1 0.1]);
+            set(groot, 'defaultLineLineWidth',2);
+            set(groot, 'defaultAxesFontSize',20);
+            set(groot, 'defaultAxesBox','on');
+            set(groot, 'defaultAxesLineWidth',2);
+
+
         %TODO: define more themes...
         otherwise
             error(['BLN:' mfilename ':UnknownTheme'], ...
