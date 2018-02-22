@@ -86,6 +86,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultAxesLineWidth',2);
 
 
+
         %TODO: define more themes...
         otherwise
             error(['BLN:' mfilename ':UnknownTheme'], ...
