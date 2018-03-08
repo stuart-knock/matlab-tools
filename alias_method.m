@@ -22,7 +22,6 @@
 %    probability_table -- The probability table used internally.
 %    number_of_values -- number of values in the initial discrete distribution.
 %
-% REQUIRES:
 %
 % REFERENCES:
 %     [1] https://en.wikipedia.org/wiki/Alias_method
@@ -38,17 +37,22 @@
     simple_data = [4; 4; 2; 2; 2; 2; 3; 1; 5; 6];
     [prob_sd, prob_sd_edges] = histcounts(simple_data, 'Normalization', 'probability');
     prob_sd_centres = prob_sd_edges(1:(end-1)) + (diff(prob_sd_edges) ./ 2.0);
-    figure, histogram(simple_data, prob_sd_edges, 'Normalization', 'probability'), title('Original Simple Data')
+    figure
+    histogram(simple_data, prob_sd_edges, 'Normalization', 'probability')
+    title('Original Simple Data')
     [draw_sd] = alias_method(prob_sd, prob_sd_centres);
-    figure, histogram(draw_sd(65536), prob_sd_edges, 'Normalization', 'probability'), title('Random Sample Simple Data Probability')
+    figure
+    histogram(draw_sd(131072), prob_sd_edges, 'Normalization', 'probability')
+    title('Random Sample Simple Data Probability')
 
 
-    %% Create a test dataset
-    source_sample_count = 16384;
+    %% Big Gaussian data example
+    % Create a test dataset
+    source_sample_count = 65536;
     rnx = randn(source_sample_count, 1);
 
     %% Turn data into a discrete probability distribution, get edges and centres.
-    [prob_rnx, prob_rnx_edges] = histcounts(rnx, 32, 'Normalization', 'probability');
+    [prob_rnx, prob_rnx_edges] = histcounts(rnx, 128, 'Normalization', 'probability');
     prob_rnx_centres = prob_rnx_edges(1:(end-1)) + (diff(prob_rnx_edges) ./ 2.0);
 
     %% Plot original data's distribution
@@ -56,12 +60,16 @@
 
     %% Called with one arg, the draw function will return indices into the probability distribution.
     [draw_rnx_ind] = alias_method(prob_rnx);
-    figure, histogram(prob_rnx_centres(draw_rnx_ind(source_sample_count)), prob_rnx_edges), title('Sample by Index Distribution')
+    figure
+    histogram(prob_rnx_centres(draw_rnx_ind(source_sample_count)), prob_rnx_edges)
+    title('Random Sample by Index Distribution')
 
     %% Called with two args, the draw function will return randomly sampled data.
     [draw_rnx] = alias_method(prob_rnx, prob_rnx_centres);
-    figure, histogram(draw_rnx(source_sample_count), prob_rnx_edges), title('Sample by Value Distribution')
-    
+    figure
+    histogram(draw_rnx(source_sample_count), prob_rnx_edges)
+    title('Random Sample by Value Distribution')
+
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
