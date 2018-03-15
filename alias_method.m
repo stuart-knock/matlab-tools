@@ -89,7 +89,11 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
     %% Do some basic tests of the discrete-distribution we were provided.
     if any(discrete_distribution < 0.0)
         error(['HPS1:' mfilename ':BadDistribution'], ...
-               'The discrete-distribution to be sampled mus all be >=0.0.');
+               'The discrete-distribution to be sampled must all be >=0.0.');
+    end
+    if ~any(discrete_distribution > 0.0)
+        error(['HPS1:' mfilename ':NoData'], ...
+                'The discrete-distribution to be sampled contains no data.');
     end
     %TODO: consider extra checks...
 
@@ -177,7 +181,7 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
     clear discrete_distribution sum_dd overfull underfull exactly_full uf of uf_index of_index
 
     %% Define the function for drawing samples from the provided distribution.
-    function [samples] = draw_samples_from_distribution(number_of_samples)
+    function [samples] = draw_samples_from_distribution(number_of_samples) %TODO: allow seed specification for reproduceable random.
         samples = nan(number_of_samples, 1);
 
         %TODO: this algorithm actually assumes uniform_variate = [0,1), ie 0<= uniform_variate < 1, but rand() returns (0,1)...
