@@ -84,17 +84,28 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
     elseif numel(discrete_distribution) ~= numel(discrete_values)
         error(['HPS1:' mfilename ':BadSize'], ...
                'The discrete-distribution and discrete-values vectors must have the same number of elements.');
+    else
+        % Ensure size is (n,1), so draw_samples() returns a column vector.
+        discrete_values = discrete_values(:);
     end
 
     %% Do some basic tests of the discrete-distribution we were provided.
+    % Do not allow negative "probability" entries, there is no sensible way to handle them.
     if any(discrete_distribution < 0.0)
         error(['HPS1:' mfilename ':BadDistribution'], ...
                'The discrete-distribution to be sampled must all be >=0.0.');
     end
+    % Following the "must not be negative" above, this excludes all entries being either 0.0 or NaN.
     if ~any(discrete_distribution > 0.0)
         error(['HPS1:' mfilename ':NoData'], ...
                 'The discrete-distribution to be sampled contains no data.');
     end
+    % Treat NaN as 0.0
+    dd_nan_mask = isnan(discrete_distribution);
+    if any(dd_nan_mask)
+        discrete_distribution(dd_nan_mask) = 0.0;
+    end
+    clear dd_nan_mask
     %TODO: consider extra checks...
 
     %% Declare function handle so we can return the function that we define below.
