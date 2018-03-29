@@ -1,15 +1,20 @@
 %% Generates random samples from a discrete probability distribution.
 %
-%  Uses the "Alias-method" [1,2].
+%  Uses the "Alias-method", see [1,2,3].
 %
 % ARGUMENTS: 
-%    discrete_distribution -- a vector containing the probabilities for each
-%                             element in the discrete distribution.
-%    discrete_values -- A vector of the values to which the probability entries
-%                       correspond. Must have the same number of entries as the
-%                       first argument. If this is not provided then the returned
-%                       draw_samples() function returns randomly sampled indices
-%                       into the discrete distribution.
+%    discrete_distribution -- a column vector containing the probabilities for
+%                             each element in the discrete distribution.
+%                             NOTE: if not column, conversion done internally.
+%    discrete_values -- a column vector of the values to which the probability
+%                       entries correspond. Must have the same number of entries
+%                       as the first argument. If this is not provided then the
+%                       returned draw_samples() function returns randomly sampled
+%                       indices into the discrete distribution.
+%                       NOTE: if not column, conversion done internally.
+%    seed -- set the state of the random-number-generator, for a reproducible
+%            draw function.
+%            NOTE: this MUST be set if you want to generate reproducible results.
 %
 % OUTPUT:
 %    draw_samples -- a function handle that can be used to sample the distribution.
@@ -17,6 +22,17 @@
 %                    function returns indices into the distribution; if alias_method()
 %                    is called with two arguments then this function returns randomly
 %                    sampled data from the distribution.
+%        Arguments to draw_samples():
+%            number_of_samples -- number of samples to draw from the discrete distribution.
+%            seed -- set the state of the random-number-generator, for reproducible sequences.
+%                    NOTE: For a given realisation of the draw_samples() function,
+%                          draw_samples(1024, 42) == [draw_samples(512, 42) ; draw_samples(512)].
+%        Output of draw_samples():
+%            samples -- a column vector of samples drawn randomly from the
+%                       discrete distribution. Whether these are indices into
+%                       that distribution or values depends on how alias_method()
+%                       was called, see description of discrete_values above.
+%
 %    %NOTE: the following return values are primarily for debugging purposes and may be removed...
 %    alias_table -- The alias table used internally.
 %    probability_table -- The probability table used internally.
@@ -26,6 +42,7 @@
 % REFERENCES:
 %     [1] https://en.wikipedia.org/wiki/Alias_method
 %     [2] http://keithschwarz.com/darts-dice-coins/
+%     [3] Knuth, Art of Computer Programming, Vol. 2 (3rd Ed): Seminumerical Algorithms: Sect. 3.4.1.
 %
 %
 % AUTHOR:
@@ -46,7 +63,7 @@
     title('Random Sample Simple Data Probability')
 
 
-    %% Big Gaussian data example
+    %% Big Gaussian data example, with exact reproduction for method and sequence.
     % Create a test dataset
     source_sample_count = 65536;
     rnx = randn(source_sample_count, 1);
@@ -59,34 +76,43 @@
     figure, histogram(rnx, prob_rnx_edges), title('Original Distribution')
 
     %% Called with one arg, the draw function will return indices into the probability distribution.
-    [draw_rnx_ind] = alias_method(prob_rnx);
+    [draw_rnx_ind] = alias_method(prob_rnx, [], 42);
     figure
-    histogram(prob_rnx_centres(draw_rnx_ind(source_sample_count)), prob_rnx_edges)
+    histogram(prob_rnx_centres(draw_rnx_ind(source_sample_count, 42)), prob_rnx_edges)
     title('Random Sample by Index Distribution')
 
     %% Called with two args, the draw function will return randomly sampled data.
-    [draw_rnx] = alias_method(prob_rnx, prob_rnx_centres);
+    [draw_rnx] = alias_method(prob_rnx, prob_rnx_centres, 42);
     figure
-    histogram(draw_rnx(source_sample_count), prob_rnx_edges)
+    histogram(draw_rnx(source_sample_count, 42), prob_rnx_edges)
     title('Random Sample by Value Distribution')
 
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [draw_samples, alias_table, probability_table, number_of_values] = alias_method(discrete_distribution, discrete_values)
+function [draw_samples, alias_table, probability_table, number_of_values] = alias_method(discrete_distribution, discrete_values, seed)
     if nargin < 1 || isempty(discrete_distribution)
         error(['HPS1:' mfilename ':NoDistribution'], ...
                'You must specify discrete-distribution to be sampled.');
+    elseif ~iscolumn(discrete_distribution)
+        % Ensure size is (n,1), so draw_samples() returns a column vector.
+        discrete_distribution = discrete_distribution(:);
     end
-    if nargin < 2
+    if nargin < 2 || isempty(discrete_values)
         discrete_values = [];
     elseif numel(discrete_distribution) ~= numel(discrete_values)
         error(['HPS1:' mfilename ':BadSize'], ...
                'The discrete-distribution and discrete-values vectors must have the same number of elements.');
-    else
+    elseif ~iscolumn(discrete_values)
         % Ensure size is (n,1), so draw_samples() returns a column vector.
         discrete_values = discrete_values(:);
+    end
+    if nargin > 2 && ~isempty(seed)
+        % Capture current state of the random number generator.
+        initial_rand_state = rng;
+        % Set the random number generator state based on caller provided seed.
+        rng(seed);
     end
 
     %% Do some basic tests of the discrete-distribution we were provided.
@@ -119,7 +145,7 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
 
     %% Initialise the main variables that will be used by the returned function.
     number_of_values = numel(discrete_distribution); %Number-of-values in the discrete distribution.
-    probability_table = number_of_values * discrete_distribution(:); %NOTE: Want column vector.
+    probability_table = number_of_values * discrete_distribution;
     alias_table = nan(number_of_values, 1);
 
     %% Categorise the probability-table entries.
@@ -155,19 +181,23 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
         end
     end % while any(underfull) && any(overfull)
 
-    % Having probability_table < 1 with no alias_table entry can cause a
-    % problem with the choice to use the alias_table in the draw function.
-    % if any(probability_table(isnan(alias_table)) < 1)
-    %     keyboard
-    % end
-    % To avoid this possibility we round any remaining overfull or underfull entries to 1.0.
-    % When everything is working correctly there should be only either overfull or underfull, but not both.
-    % Furthermore, the underfull values should be of the form 0.999...??? and the overfull ones 1.000...???,
-    % from some quick tests, worst case rounding error seems to be around 1.0e-13... so its a very small probability problem we're correcting for here.
-    % However, this has the potential to hide any bug in the above algorithm, 
-%TODO: evaluate this correction, we don't want it hiding actual errors.
-    % Any remaining overfull or underfull should be rounding error. 
-    % Clean-up any accumulated rounding error.
+%TODO: the following rounding-error correction has the potential to hide any bug
+%      in the above algorithm, it should be evaluated more thoroughly, we don't
+%      want it hiding actual errors.
+% if any(probability_table(isnan(alias_table)) < 1)
+%     keyboard
+% end
+
+    %NOTE: Having probability_table < 1 with no alias_table entry can cause a
+    %      problem with the choice to use the alias_table in the draw function.
+    %      To avoid this possibility we round any remaining overfull or
+    %      underfull entries to 1.0. When everything is working correctly there
+    %      should be only either overfull or underfull, but not both. Furthermore,
+    %      the underfull values should be ~0.999??? and the overfull ~1.000???,
+    %      from some quick tests, rounding error seems to be ~< 1.0e-13, so, it's
+    %      a very small probability problem we're correcting for here.
+
+    % Clean-up any accumulated rounding error, see NOTE above for details.
     final_uf = find(underfull);
     final_of = find(overfull);
     if ~isempty(final_of)
@@ -183,35 +213,78 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
         % fprintf('abs(probability_table(final_uf) - 1.0): "%s".\n', num2str(abs(probability_table(final_uf) - 1.0), 16))
         probability_table(final_uf) = 1.0; %round(probability_table(final_uf));
     end
-        
-    % if any(probability_table(isnan(alias_table)) < 1.0)
-    %     keyboard
-    % end
 
-    %% Clear temporary stuff from above from the name-space, so our drawing function isn't carrying around random cruft
-    clear discrete_distribution sum_dd overfull underfull exactly_full uf of uf_index of_index
+    % Initialise a variable containing the current random state, used to enable reproducible sequences.
+    current_rand_state = rng;
+
+    if nargin > 2 && ~isempty(seed)
+        % Reset the state of the random number generator to what it was when we were called.
+        rng(initial_rand_state);
+    end
+
+    %% Clear temporary stuff from above from the name-space, so our draw_samples() function isn't carrying around unnecessary cruft
+    clear discrete_distribution sum_dd overfull underfull exactly_full uf of uf_index of_index final_uf final_of seed initial_rand_state
+
 
     %% Define the function for drawing samples from the provided distribution.
-    function [samples] = draw_samples_from_distribution(number_of_samples) %TODO: allow seed specification for reproduceable random.
+    function [samples] = draw_samples_from_distribution(number_of_samples, seed)
+        % Capture current state of the random number generator.
+        initial_rand_state = rng;
+        if nargin > 1 && ~isempty(seed)
+            % Set the random number generator state based on caller provided seed.
+            rng(seed);
+        else
+            % Set the random number generator state it had at the end of the last call.
+            rng(current_rand_state)
+        end
+
+        % Initialise our return value.
         samples = nan(number_of_samples, 1);
 
+        % Draw a sequence of uniform random numbers.
+        uniform_variate = rand(size(samples)); %NOTE: rand() returns open interval (0,1), ie excludes both 0 and 1.
+
         %TODO: this algorithm actually assumes uniform_variate = [0,1), ie 0<= uniform_variate < 1, but rand() returns (0,1)...
-        uniform_variate = rand(size(samples)); %NOTE: rand() produces open interval (0,1), ie excludes both 0 and 1.
+        %      however, as the probability of hitting 0 in a random draw in the [0,1) case would be in the range 2^-53 to 2^-64 it probably ;-) isn't worth it...
+        % % Draw a sequence of random numbers in a closed-open interval[0,1), ie with 0 <= x < 1.
+        % uniform_variates = co_rand(size(samples));
+
+        % Select random indices into the discrete probability-distribution.
         random_table_index = floor(number_of_values * uniform_variate) + 1; %uniform-random samples from {1,2,...,number_of_values}
 
+        % Calculate the threshold for selecting between probability-table and alias-table.
         uniform_index_remainder = (number_of_values * uniform_variate) + 1 - random_table_index;
 
         % Create a mask to determine whether to return samples based on probability-table or alias-table.
         mask_prob_or_alias = uniform_index_remainder <  probability_table(random_table_index);
 
+        % Set sample indices based on probability-table.
         samples(mask_prob_or_alias) = random_table_index(mask_prob_or_alias);
+        % Set sample indices based on alias-table
         samples(~mask_prob_or_alias) = alias_table(random_table_index(~mask_prob_or_alias));
 
-        %If values that the probabilities correspond to were provided, do the mapping.
+        % If values that the probabilities correspond to were provided, do the mapping.
         if ~isempty(discrete_values)
             samples = discrete_values(samples);
         end
 
+        % Update the variable containing the current random state, so calling,
+        % for example, draw_samples_from_distribution(512) twice produces the
+        % same sequence as calling draw_samples_from_distribution(1024).
+        current_rand_state = rng;
+
+        % Reset the state of the random number generator to what it was when we were
+        % called, so calling this function does not alter the state of rng.
+        rng(initial_rand_state);
     end %function draw_samples_from_distribution()
+
+    % %% Define a function to draw a sequence of random numbers in a closed-open interval[0,1), ie with 0 <= x < 1.
+    % function [uniform_variates] = co_rand(sz)
+    %     %TODO: Find a good reference/description of how this works... Maybe check Knuth AoCP Vol 2.
+    %     uri1 = bitshift(randi([0, 2^32-1], sz), -5); %Uniform random integers...floor(42 / 2.0^5) == bitshift(42, -5)
+    %     uri2 = bitshift(randi([0, 2^32-1], sz), -6);
+    %     %NOTE: %2.0^53 == 9007199254740992.0; %2.0^26 == 67108864.0
+    %     uniform_variates = (uri1 .* 67108864.0 + uri2) ./ 9007199254740992.0; % Random double closed-open interval [0,1), ie includes 0, excludes 1.
+    % end % function co_rand()
 
 end %function alias_method()
