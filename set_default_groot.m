@@ -72,7 +72,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultTextColor',   [255, 255, 255] ./ 255);
             
         case 'paper'
-            %% Set a dark colour theme.
+            %% Set a paper colour theme.
             set(groot, 'defaultAxesColor',   [255, 255, 255] ./ 255);
             set(groot, 'defaultAxesYColor',  [  0,   0,   0] ./ 255);
             set(groot, 'defaultAxesXColor',  [  0,   0,   0] ./ 255);
