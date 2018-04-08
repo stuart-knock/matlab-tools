@@ -88,6 +88,8 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultFigurePaperUnits','centimeters');
             set(groot, 'defaultFigureUnits','centimeters');
             set(groot, 'defaultFigurePaperSize',[21 29.7]);
+            set(groot, 'defaultFigurePaperOrientation','landscape');
+            set(groot, 'defaultFigurePaperPositionMode','auto');
             set(groot, 'defaultFigurePaperType','a4');
             set(groot, 'defaultFigurePosition',[2 2 20 12]);
 
