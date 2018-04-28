@@ -90,10 +90,9 @@
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 function [draw_samples, alias_table, probability_table, number_of_values] = alias_method(discrete_distribution, discrete_values, seed)
     if nargin < 1 || isempty(discrete_distribution)
-        error(['HPS1:' mfilename ':NoDistribution'], ...
+        error(['SAK:' mfilename ':NoDistribution'], ...
                'You must specify discrete-distribution to be sampled.');
     elseif ~iscolumn(discrete_distribution)
         % Ensure size is (n,1), so draw_samples() returns a column vector.
@@ -102,28 +101,22 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
     if nargin < 2 || isempty(discrete_values)
         discrete_values = [];
     elseif numel(discrete_distribution) ~= numel(discrete_values)
-        error(['HPS1:' mfilename ':BadSize'], ...
+        error(['SAK:' mfilename ':BadSize'], ...
                'The discrete-distribution and discrete-values vectors must have the same number of elements.');
     elseif ~iscolumn(discrete_values)
         % Ensure size is (n,1), so draw_samples() returns a column vector.
         discrete_values = discrete_values(:);
     end
-    if nargin > 2 && ~isempty(seed)
-        % Capture current state of the random number generator.
-        initial_rand_state = rng;
-        % Set the random number generator state based on caller provided seed.
-        rng(seed);
-    end
 
     %% Do some basic tests of the discrete-distribution we were provided.
     % Do not allow negative "probability" entries, there is no sensible way to handle them.
     if any(discrete_distribution < 0.0)
-        error(['HPS1:' mfilename ':BadDistribution'], ...
+        error(['SAK:' mfilename ':BadDistribution'], ...
                'The discrete-distribution to be sampled must all be >=0.0.');
     end
     % Following the "must not be negative" above, this excludes all entries being either 0.0 or NaN.
     if ~any(discrete_distribution > 0.0)
-        error(['HPS1:' mfilename ':NoData'], ...
+        error(['SAK:' mfilename ':NoData'], ...
                 'The discrete-distribution to be sampled contains no data.');
     end
     % Treat NaN as 0.0
@@ -133,6 +126,13 @@ function [draw_samples, alias_table, probability_table, number_of_values] = alia
     end
     clear dd_nan_mask
     %TODO: consider extra checks...
+
+    if nargin > 2 && ~isempty(seed)
+        % Capture current state of the random number generator.
+        initial_rand_state = rng;
+        % Set the random number generator state based on caller provided seed.
+        rng(seed);
+    end
 
     %% Declare function handle so we can return the function that we define below.
     draw_samples = @draw_samples_from_distribution;
