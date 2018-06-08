@@ -58,23 +58,15 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
             disp(['Saving figure as: ' full_path_figure]);
             switch lower(save_formats{k})
                 case {'pdf'}
-                    figure_handle.PaperPositionMode = 'auto';
-                    figure_handle.PaperOrientation = 'landscape';
                     print(figure_handle, full_path_figure, ['-d' save_formats{k}], '-fillpage');
                 case {'svg'}
-                    figure_handle.PaperPosition = [0 0 this_paper_size];
-                    figure_handle.PaperPositionMode = 'manual';
                     print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
                 case {'eps'}
-                    figure_handle.PaperPosition = [0 0 this_paper_size];
-                    figure_handle.PaperPositionMode = 'manual';
                     print(figure_handle, full_path_figure, ['-d' save_formats{k} 'c']);
                 case {'jpeg', 'tiff'}
-                    landscape_position = [0 0 this_paper_size];
-                    figure_handle.PaperPositionMode = 'manual';
                     figure_handle.PaperOrientation = 'portrait';
-                    figure_handle.PaperPosition = landscape_position;
                     print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
+                    figure_handle.PaperOrientation = 'landscape';
                 case {'fig'}
                     savefig(figure_handle, full_path_figure);
                 otherwise
