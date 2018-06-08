@@ -101,7 +101,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultAxesXColor',       [128, 128, 128] ./ 255);
             set(groot, 'defaultTextColor',        [128, 128, 128] ./ 255);
             set(groot, 'defaultAxesGridColor',    [ 96,  96,  96] ./ 255);
-            set(groot, 'DefaultFigureColormap',   'winter');
+            set(groot, 'DefaultFigureColormap',   winter);
             set(groot, 'defaultTextFontSize',     16);
             set(groot, 'defaultAxesFontSize',     16);
             set(groot, 'defaultLineLineWidth',     2);
