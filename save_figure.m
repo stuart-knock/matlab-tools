@@ -39,7 +39,7 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
     if nargin < 3 || isempty(fig_basename)
         fig_basename = ['figure_' figure_handle.Number]; %Default to matlab fig format.
         if ~isempty(figure_handle.Name)
-            fig_basename = [fig_basename '_' genvarname(figure_handle.Name)];
+            fig_basename = [fig_basename '_' matlab.lang.makeValidName(figure_handle.Name)];
         end
     end
     if nargin < 4 || isempty(output_path)
