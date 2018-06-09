@@ -288,7 +288,8 @@ function [precall_default_groot] = set_default_groot(theme)
             %TODO: define more themes...
             otherwise
                 error(['SAK:' mfilename ':UnknownTheme'], ...
-                      'The theme you specified is not recognised: "%s".', theme);
+                      'The theme you specified is not recognised: "%s".', ...
+                      fprintf(['{' repmat('''%s'',', 1, (numel(theme)-1)) '''%s''}'], theme{:}));
         end %switch lower(theme{tk})
     end % for tk = 1:numel(theme)
 
