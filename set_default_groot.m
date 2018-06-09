@@ -34,11 +34,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [precall_default_groot] = set_default_groot(theme)
-    if nargin < 1 || isempty(theme) || ~(isstruct(theme) || ischar(theme))
+    if nargin < 1 || isempty(theme) || ~(isstruct(theme) || ischar(theme) || iscell(theme)) %
         error(['SAK:' mfilename ':BadArgs'], 'You must specify a theme.')
     end
 
-    if ischar(theme) && nargout < 1 %&& ~ismember(theme, {'default', 'matlab'})
+    if (ischar(theme) || iscell(theme)) && nargout < 1 %&& ~ismember(theme, {'default', 'matlab'})
         error(['SAK:' mfilename ':NoPreStateAssignment'], ...
               'The pre-call state must be captured to enable undoing changes.');
     end
@@ -67,114 +67,229 @@ function [precall_default_groot] = set_default_groot(theme)
         return
     end %isstruct(theme)
 
-    %% Apply the default groot values for the requested theme.
-    switch lower(theme)
-        % case {'default', 'matlab'}
-        %     %% Reset to the default Matlab theme.
-        %     return
+    %Meta themes
+    if ischar(theme)
+        switch lower(theme)
+            case 'paper'
+                theme = {'light', 'a4-landscape'};
+            case 'presentation'
+                theme = {'dark', 'compact-landscape'};
+            otherwise
+                theme = {theme};
+        end %switch lower(theme)
+    end %
 
-        case 'dark'
-            %% Set a dark theme.
-            set(groot, 'defaultFigureColor',       [ 31.875,  31.875,  31.875] ./ 255);
-            set(groot, 'defaultAxesColor',         [ 31.875,  31.875,  31.875] ./ 255);
-            set(groot, 'defaultAxesYColor',        [191.25,  191.25,  191.25]  ./ 255);
-            set(groot, 'defaultAxesXColor',        [191.25,  191.25,  191.25]  ./ 255);
-            set(groot, 'defaultTextColor',         [191.25,  191.25,  191.25]  ./ 255);
-            set(groot, 'defaultAxesGridColor',     [ 63.75,   63.75,   63.75]  ./ 255);
-            set(groot, 'defaultTextFontSize',      16);
-            set(groot, 'defaultAxesFontSize',      16);
-            set(groot, 'defaultAxesLineWidth',      2);
-            set(groot, 'defaultLineLineWidth',      2);
-            set(groot, 'defaultAxesBox',           'on');
-            set(groot, 'defaultFigurePaperUnits',  'centimeters');
-            set(groot, 'defaultFigureUnits',       'centimeters');
-            set(groot, 'defaultFigurePaperSize',   [18 10]);
-            set(groot, 'defaultFigurePosition',    [2 2 18 10]);
-            set(groot, 'defaultFigurePaperOrientation',  'landscape');
-            set(groot, 'defaultFigurePaperPositionMode', 'auto');
-            set(groot, 'defaultFigurePaperType',   '<custom>');
-            set(groot, 'defaultFigureInvertHardcopy', 'off');
+    for tk = 1:numel(theme)
+        %% Apply the default groot values for the requested theme.
+        switch lower(theme{tk})
+            % Colour themes
+            case 'dark'
+                %% Set a dark theme.
+                set(groot, 'defaultFigureColor',   [ 31.875,  31.875,  31.875] ./ 255);
+                set(groot, 'defaultAxesColor',     [ 31.875,  31.875,  31.875] ./ 255);
+                set(groot, 'defaultAxesYColor',    [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultAxesXColor',    [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultTextColor',     [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultAxesGridColor', [ 63.75,   63.75,   63.75]  ./ 255);
+                set(groot, 'defaultAxesBox',       'on');
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
 
-        case 'light'
-            %% Set a light theme.
-            set(groot, 'defaultAxesColor',        [255, 255, 255] ./ 255);
-            set(groot, 'defaultAxesYColor',       [  0,   0,   0] ./ 255);
-            set(groot, 'defaultAxesXColor',       [  0,   0,   0] ./ 255);
-            set(groot, 'defaultFigureColor',      [255, 255, 255] ./ 255);
-            set(groot, 'defaultTextColor',        [  0,   0,   0] ./ 255);
-            set(groot, 'defaultAxesGridColor',    [ 26,  26,  26] ./ 255);
-            set(groot, 'defaultAxesGridAlpha',    1);
-            set(groot, 'defaultTextFontSize',     16);
-            set(groot, 'defaultAxesFontSize',     16);
-            set(groot, 'defaultAxesLineWidth',     2);
-            set(groot, 'defaultLineLineWidth',     2);
-            set(groot, 'defaultAxesBox',          'on');
-            set(groot, 'defaultFigurePaperUnits', 'centimeters');
-            set(groot, 'defaultFigureUnits',      'centimeters');
-            set(groot, 'defaultFigurePaperSize',  [18 10]);
-            set(groot, 'defaultFigurePosition',   [2 2 18 10]);
-            set(groot, 'defaultFigurePaperOrientation',  'landscape');
-            set(groot, 'defaultFigurePaperPositionMode', 'auto');
-            set(groot, 'defaultFigurePaperType',   '<custom>');
-            set(groot, 'defaultFigureInvertHardcopy', 'off');
+            case 'light'
+                %% Set a light theme.
+                set(groot, 'defaultAxesColor',     [255, 255, 255] ./ 255);
+                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultFigureColor',   [255, 255, 255] ./ 255);
+                set(groot, 'defaultTextColor',     [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesGridColor', [ 26,  26,  26] ./ 255);
+                set(groot, 'defaultAxesGridAlpha', 1);
+                set(groot, 'defaultAxesBox',       'on');
 
-        case {'grey', 'gray', 'winter'}
-            %% Set a grey theme.
-            set(groot, 'defaultFigureColor',      [ 64,  64,  64] ./ 255);
-            set(groot, 'defaultAxesColor',        [ 64,  64,  64] ./ 255);
-            set(groot, 'defaultAxesYColor',       [128, 128, 128] ./ 255);
-            set(groot, 'defaultAxesXColor',       [128, 128, 128] ./ 255);
-            set(groot, 'defaultTextColor',        [128, 128, 128] ./ 255);
-            set(groot, 'defaultAxesGridColor',    [ 96,  96,  96] ./ 255);
-            set(groot, 'DefaultFigureColormap',   winter);
-            set(groot, 'defaultTextFontSize',     16);
-            set(groot, 'defaultAxesFontSize',     16);
-            set(groot, 'defaultLineLineWidth',     2);
-            set(groot, 'defaultAxesLineWidth',     2);
-            set(groot, 'defaultAxesBox',          'off');
-            set(groot, 'defaultFigurePaperUnits', 'centimeters');
-            set(groot, 'defaultFigureUnits',      'centimeters');
-            set(groot, 'defaultFigurePaperSize',  [18 10]);
-            set(groot, 'defaultFigurePosition',   [2 2 18 10]);
-            set(groot, 'defaultFigurePaperOrientation',  'landscape');
-            set(groot, 'defaultFigurePaperPositionMode', 'auto');
-            set(groot, 'defaultFigurePaperType',   '<custom>');
-            set(groot, 'defaultFigureInvertHardcopy', 'off');
+            case {'grey', 'gray', 'winter'}
+                %% Set a grey theme.
+                set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
+                set(groot, 'DefaultFigureColormap', winter);
+                set(groot, 'defaultAxesBox',        'off');
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
 
-        case 'paper'
-            %% Set a paper theme.
-            set(groot, 'defaultAxesColor',        [255, 255, 255] ./ 255);
-            set(groot, 'defaultAxesYColor',       [  0,   0,   0] ./ 255);
-            set(groot, 'defaultAxesXColor',       [  0,   0,   0] ./ 255);
-            set(groot, 'defaultFigureColor',      [255, 255, 255] ./ 255);
-            set(groot, 'defaultTextColor',        [  0,   0,   0] ./ 255);
-            set(groot, 'defaultAxesGridColor',    [ 26,  26,  26] ./ 255);
-            set(groot, 'defaultAxesGridAlpha',     1);
-            set(groot, 'defaultTextFontSize',     16);
-            set(groot, 'defaultAxesFontSize',     16);
-            set(groot, 'defaultLineLineWidth',     2);
-            set(groot, 'defaultAxesLineWidth',     2);
-            set(groot, 'defaultAxesBox',          'on');
-            set(groot, 'defaultFigureUnits',      'centimeters');
-            set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
-            set(groot, 'defaultFigurePaperUnits', 'centimeters');
-            set(groot, 'defaultFigurePaperType', 'a4');
-            set(groot, 'defaultFigurePaperOrientation',  'landscape');
-            set(groot, 'defaultFigurePaperPositionMode', 'auto');
+            case 'rand'
+                %% Set a random colour theme.
+                set(groot, 'defaultAxesColor',     [rand, rand, rand]);
+                set(groot, 'defaultAxesYColor',    [rand, rand, rand]);
+                set(groot, 'defaultAxesXColor',    [rand, rand, rand]);
+                set(groot, 'defaultFigureColor',   [rand, rand, rand]);
+                set(groot, 'defaultTextColor',     [rand, rand, rand]);
+                set(groot, 'defaultAxesGridColor', [rand, rand, rand]);
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
 
-        case 'rand'
-            %% Set a random colour theme.
-            set(groot, 'defaultAxesColor',     [rand, rand, rand]);
-            set(groot, 'defaultAxesYColor',    [rand, rand, rand]);
-            set(groot, 'defaultAxesXColor',    [rand, rand, rand]);
-            set(groot, 'defaultFigureColor',   [rand, rand, rand]);
-            set(groot, 'defaultTextColor',     [rand, rand, rand]);
-            set(groot, 'defaultAxesGridColor', [rand, rand, rand]);
+            %Scaling/sizing themes
+            case {'compact', 'basic', 'compact-landscape', 'basic-landscape'}
+                set(groot, 'defaultTextFontSize',      16);
+                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 16.18 10.0]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [16.18 10.0]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
-        %TODO: define more themes...
-        otherwise
-            error(['SAK:' mfilename ':UnknownTheme'], ...
-                  'The theme you specified is not recognised: "%s".', theme);
-    end %switch lower(theme)
+            case {'large', 'dense', 'large-landscape', 'dense-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',   [2 2 24.27 15.0]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperSize',  [24.27 15.0]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'compact-portrait', 'basic-portrait'}
+                set(groot, 'defaultTextFontSize',      16);
+                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 10.0 16.18]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [10.0 16.18]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'large-portrait', 'dense-portrait'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',   [2 2 15.0 24.27]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperSize',  [15.0 24.27]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'square', 'compact-square'}
+                set(groot, 'defaultTextFontSize',      16);
+                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 16 16]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [16 16]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'large-square'}
+                set(groot, 'defaultTextFontSize',      16);
+                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 22 22]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [22 22]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+
+            case {'a5', 'a5-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a5');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'a5-portrait'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a5');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'a4', 'a4-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a4');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'a4-portrait'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a4');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'a3', 'a3-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a3');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'a3-portrait'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultAxesBox',          'on');
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperType', 'a3');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            %TODO: define more themes...
+            otherwise
+                error(['SAK:' mfilename ':UnknownTheme'], ...
+                      'The theme you specified is not recognised: "%s".', theme);
+        end %switch lower(theme{tk})
+    end % for tk = 1:numel(theme)
 
 end % function set_default_groot()

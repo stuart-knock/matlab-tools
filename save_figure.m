@@ -64,9 +64,17 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
                 case {'eps'}
                     print(figure_handle, full_path_figure, ['-d' save_formats{k} 'c']);
                 case {'jpeg', 'tiff'}
-                    figure_handle.PaperOrientation = 'portrait';
+                    if strcmp(figure_handle.PaperOrientation, 'portrait');
+                        figure_handle.PaperOrientation = 'landscape';
+                    else
+                        figure_handle.PaperOrientation = 'portrait';
+                    end
                     print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
-                    figure_handle.PaperOrientation = 'landscape';
+                    if strcmp(figure_handle.PaperOrientation, 'portrait');
+                        figure_handle.PaperOrientation = 'landscape';
+                    else
+                        figure_handle.PaperOrientation = 'portrait';
+                    end
                 case {'fig'}
                     savefig(figure_handle, full_path_figure);
                 otherwise
