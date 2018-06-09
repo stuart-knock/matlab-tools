@@ -89,7 +89,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultFigurePaperUnits',  'centimeters');
             set(groot, 'defaultFigureUnits',       'centimeters');
             set(groot, 'defaultFigurePaperSize',   [18 10]);
-            set(groot, 'defaultFigurePosition',    [2 2 20 12]);
+            set(groot, 'defaultFigurePosition',    [2 2 18 10]);
             set(groot, 'defaultFigurePaperOrientation',  'landscape');
             set(groot, 'defaultFigurePaperPositionMode', 'auto');
             set(groot, 'defaultFigurePaperType',   '<custom>');
@@ -112,7 +112,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultFigurePaperUnits', 'centimeters');
             set(groot, 'defaultFigureUnits',      'centimeters');
             set(groot, 'defaultFigurePaperSize',  [18 10]);
-            set(groot, 'defaultFigurePosition',   [2 2 20 12]);
+            set(groot, 'defaultFigurePosition',   [2 2 18 10]);
             set(groot, 'defaultFigurePaperOrientation',  'landscape');
             set(groot, 'defaultFigurePaperPositionMode', 'auto');
             set(groot, 'defaultFigurePaperType',   '<custom>');
@@ -135,7 +135,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultFigurePaperUnits', 'centimeters');
             set(groot, 'defaultFigureUnits',      'centimeters');
             set(groot, 'defaultFigurePaperSize',  [18 10]);
-            set(groot, 'defaultFigurePosition',   [2 2 20 12]);
+            set(groot, 'defaultFigurePosition',   [2 2 18 10]);
             set(groot, 'defaultFigurePaperOrientation',  'landscape');
             set(groot, 'defaultFigurePaperPositionMode', 'auto');
             set(groot, 'defaultFigurePaperType',   '<custom>');
@@ -156,7 +156,7 @@ function [precall_default_groot] = set_default_groot(theme)
             set(groot, 'defaultAxesLineWidth',     2);
             set(groot, 'defaultAxesBox',          'on');
             set(groot, 'defaultFigureUnits',      'centimeters');
-            set(groot, 'defaultFigurePosition',  [2 2 24.275 17.75]);
+            set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
             set(groot, 'defaultFigurePaperUnits', 'centimeters');
             set(groot, 'defaultFigurePaperType', 'a4');
             set(groot, 'defaultFigurePaperOrientation',  'landscape');
