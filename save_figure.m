@@ -52,7 +52,6 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
 
     %% Save the figure in any requested formats.
     if ~isempty(save_formats)
-        this_paper_size = figure_handle.PaperSize;
         for k = 1:numel(save_formats)
             full_path_figure = [output_path filesep fig_basename '.' save_formats{k}];
             disp(['Saving figure as: ' full_path_figure]);
@@ -64,17 +63,10 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
                 case {'eps'}
                     print(figure_handle, full_path_figure, ['-d' save_formats{k} 'c']);
                 case {'jpeg', 'tiff'}
-                    if strcmp(figure_handle.PaperOrientation, 'portrait');
-                        figure_handle.PaperOrientation = 'landscape';
-                    else
-                        figure_handle.PaperOrientation = 'portrait';
-                    end
+                    orig_orient = figure_handle.PaperOrientation;
+                    figure_handle.PaperOrientation = 'portrait';
                     print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
-                    if strcmp(figure_handle.PaperOrientation, 'portrait');
-                        figure_handle.PaperOrientation = 'landscape';
-                    else
-                        figure_handle.PaperOrientation = 'portrait';
-                    end
+                    figure_handle.PaperOrientation = orig_orient;
                 case {'fig'}
                     savefig(figure_handle, full_path_figure);
                 otherwise
