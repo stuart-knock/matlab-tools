@@ -73,7 +73,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case 'paper'
                 theme = {'light', 'a4-landscape'};
             case 'presentation'
-                theme = {'dark', 'compact-landscape'};
+                theme = {'dark', 'medium-landscape'};
             otherwise
                 theme = {theme};
         end %switch lower(theme)
@@ -128,7 +128,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
             %Scaling/sizing themes
-            case {'compact', 'basic', 'compact-landscape', 'basic-landscape'}
+            case {'small', 'small-landscape'}
                 set(groot, 'defaultTextFontSize',      14);
                 set(groot, 'defaultAxesFontSize',      14);
                 set(groot, 'defaultAxesLineWidth',      2);
@@ -141,9 +141,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
-            case {'large', 'dense', 'large-landscape', 'dense-landscape'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+            case {'medium', 'medium-landscape'}
+                set(groot, 'defaultTextFontSize',     15);
+                set(groot, 'defaultAxesFontSize',     15);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -154,7 +154,20 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
-            case {'compact-portrait', 'basic-portrait'}
+            case {'large', 'large-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',   [2 2 32.36 20.0]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperSize',  [32.36 20.0]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'small-protrait'}
                 set(groot, 'defaultTextFontSize',      14);
                 set(groot, 'defaultAxesFontSize',      14);
                 set(groot, 'defaultAxesLineWidth',      2);
@@ -167,9 +180,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
-            case {'large-portrait', 'dense-portrait'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+            case {'medium-portrait'}
+                set(groot, 'defaultTextFontSize',     15);
+                set(groot, 'defaultAxesFontSize',     15);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -180,9 +193,35 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
-            case {'square', 'compact-square'}
-                set(groot, 'defaultTextFontSize',      16);
-                set(groot, 'defaultAxesFontSize',      16);
+            case {'large-portrait'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',   [2 2 20.0 32.36]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperSize',  [20.0 32.36]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'small-square'}
+                set(groot, 'defaultTextFontSize',      14);
+                set(groot, 'defaultAxesFontSize',      14);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 10 10]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [10 10]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'square', 'medium-square'}
+                set(groot, 'defaultTextFontSize',      15);
+                set(groot, 'defaultAxesFontSize',      15);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -208,26 +247,26 @@ function [precall_default_groot] = set_default_groot(theme)
 
 
             case {'a5', 'a5-landscape'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextFontSize',     15);
+                set(groot, 'defaultAxesFontSize',     15);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePosition',  [2 2 21.0 14.8]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a5');
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
             case {'a5-portrait'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextFontSize',     15);
+                set(groot, 'defaultAxesFontSize',     15);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePosition',  [2 2 14.8 21.0]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a5');
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
@@ -240,7 +279,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePosition',  [2 2 29.7 21.0]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a4');
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
@@ -253,33 +292,33 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePosition',  [2 2 21.0 29.7]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a4');
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
             case {'a3', 'a3-landscape'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextFontSize',     17);
+                set(groot, 'defaultAxesFontSize',     17);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 22.275 15.75]);
+                set(groot, 'defaultFigurePosition',  [2 2 42.0 29.7]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a3');
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
             case {'a3-portrait'}
-                set(groot, 'defaultTextFontSize',     16);
-                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextFontSize',     17);
+                set(groot, 'defaultAxesFontSize',     17);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
                 set(groot, 'defaultFigureUnits',      'centimeters');
-                set(groot, 'defaultFigurePosition',  [2 2 15.75 22.275]);
+                set(groot, 'defaultFigurePosition',  [2 2 29.7 42.0]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperType', 'a3');
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
