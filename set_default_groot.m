@@ -114,6 +114,20 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
                 set(groot, 'DefaultFigureColormap', winter);
+                set(groot, 'DefaultAxesColorOrder', winter(7))
+                set(groot, 'defaultAxesBox',        'off');
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
+
+            case {'winter-ocean'}
+                %% Set a winter-ocean (greys and blues) theme.
+                set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
+                set(groot, 'DefaultFigureColormap', blues);
+                set(groot, 'DefaultAxesColorOrder', blues(7))
                 set(groot, 'defaultAxesBox',        'off');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
