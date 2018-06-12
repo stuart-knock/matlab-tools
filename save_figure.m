@@ -57,15 +57,15 @@ function save_figure(figure_handle, save_formats, fig_basename, output_path)
             disp(['Saving figure as: ' full_path_figure]);
             switch lower(save_formats{k})
                 case {'pdf'}
-                    print(figure_handle, full_path_figure, ['-d' save_formats{k}], '-fillpage');
+                    print(figure_handle, full_path_figure, ['-d' save_formats{k}], '-bestfit');
                 case {'svg'}
-                    print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
+                    print(figure_handle, '-painters', full_path_figure, ['-d' save_formats{k}]);
                 case {'eps'}
-                    print(figure_handle, full_path_figure, ['-d' save_formats{k} 'c']);
+                    print(figure_handle, '-painters', full_path_figure, ['-d' save_formats{k} 'c']);
                 case {'jpeg', 'tiff'}
                     orig_orient = figure_handle.PaperOrientation;
                     figure_handle.PaperOrientation = 'portrait';
-                    print(figure_handle, full_path_figure, ['-d' save_formats{k}]);
+                    print(figure_handle, full_path_figure, ['-d' save_formats{k}]); %TODO: consider '-r300'
                     figure_handle.PaperOrientation = orig_orient;
                 case {'fig'}
                     savefig(figure_handle, full_path_figure);
