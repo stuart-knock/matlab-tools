@@ -129,8 +129,8 @@ function [precall_default_groot] = set_default_groot(theme)
 
             %Scaling/sizing themes
             case {'compact', 'basic', 'compact-landscape', 'basic-landscape'}
-                set(groot, 'defaultTextFontSize',      16);
-                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultTextFontSize',      14);
+                set(groot, 'defaultAxesFontSize',      14);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -155,8 +155,8 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
 
             case {'compact-portrait', 'basic-portrait'}
-                set(groot, 'defaultTextFontSize',      16);
-                set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultTextFontSize',      14);
+                set(groot, 'defaultAxesFontSize',      14);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
