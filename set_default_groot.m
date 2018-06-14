@@ -105,8 +105,19 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesGridAlpha', 1);
                 set(groot, 'defaultAxesBox',       'on');
 
-            case {'grey', 'gray', 'winter'}
+            case {'grey', 'gray'}
                 %% Set a grey theme.
+                set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
+                set(groot, 'defaultAxesBox',        'off');
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
+
+            case {'winter'}
+                %% Set a winter (greys and winter colormap) theme.
                 set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
@@ -119,7 +130,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
             case {'winter-ocean'}
-                %% Set a winter-ocean (greys and blues) theme.
+                %% Set a winter-ocean (greys and blues colourmap) theme.
                 set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
@@ -177,6 +188,19 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePosition',   [2 2 32.36 20.0]);
                 set(groot, 'defaultFigurePaperUnits', 'centimeters');
                 set(groot, 'defaultFigurePaperSize',  [32.36 20.0]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'landscape');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'xl', 'xl-landscape', 'extra-large', 'extra-large-landscape'}
+                set(groot, 'defaultTextFontSize',     16);
+                set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultAxesLineWidth',     2);
+                set(groot, 'defaultLineLineWidth',     2);
+                set(groot, 'defaultFigureUnits',      'centimeters');
+                set(groot, 'defaultFigurePosition',   [2 2 48.54 30.0]);
+                set(groot, 'defaultFigurePaperUnits', 'centimeters');
+                set(groot, 'defaultFigurePaperSize',  [48.54 30.0]);
                 set(groot, 'defaultFigurePaperType',   '<custom>');
                 set(groot, 'defaultFigurePaperOrientation',  'landscape');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
