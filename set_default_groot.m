@@ -90,6 +90,8 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesYColor',    [191.25,  191.25,  191.25]  ./ 255);
                 set(groot, 'defaultAxesXColor',    [191.25,  191.25,  191.25]  ./ 255);
                 set(groot, 'defaultTextColor',     [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [191.25, 191.25, 191.25] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [191.25, 191.25, 191.25] ./ 255);
                 set(groot, 'defaultAxesGridColor', [ 63.75,   63.75,   63.75]  ./ 255);
                 set(groot, 'defaultAxesBox',       'on');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
@@ -101,6 +103,8 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
                 set(groot, 'defaultFigureColor',   [255, 255, 255] ./ 255);
                 set(groot, 'defaultTextColor',     [  0,   0,   0] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [0, 0, 0] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [0, 0, 0] ./ 255);
                 set(groot, 'defaultAxesGridColor', [ 26,  26,  26] ./ 255);
                 set(groot, 'defaultAxesGridAlpha', 1);
                 set(groot, 'defaultAxesBox',       'on');
@@ -112,18 +116,22 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
                 set(groot, 'defaultAxesBox',        'off');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
             case {'winter'}
                 %% Set a winter (greys and winter colormap) theme.
-                set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
-                set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
-                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
-                set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
-                set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
-                set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
+                set(groot, 'defaultFigureColor',           [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesColor',             [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesYColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesXColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextColor',             [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesGridColor',         [ 96,  96,  96] ./ 255);
                 set(groot, 'DefaultFigureColormap', winter);
                 set(groot, 'DefaultAxesColorOrder', winter(7))
                 set(groot, 'defaultAxesBox',        'off');
@@ -136,6 +144,8 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
                 set(groot, 'DefaultFigureColormap', blues);
                 set(groot, 'DefaultAxesColorOrder', blues(7))
@@ -149,6 +159,8 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesXColor',    [rand, rand, rand]);
                 set(groot, 'defaultFigureColor',   [rand, rand, rand]);
                 set(groot, 'defaultTextColor',     [rand, rand, rand]);
+                set(groot, 'defaultTextboxshapeColor',     [rand, rand, rand] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [rand, rand, rand] ./ 255);
                 set(groot, 'defaultAxesGridColor', [rand, rand, rand]);
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
@@ -156,6 +168,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'small', 'small-landscape'}
                 set(groot, 'defaultTextFontSize',      14);
                 set(groot, 'defaultAxesFontSize',      14);
+                set(groot, 'defaultTextboxshapeFontSize', 13);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -169,6 +182,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'medium', 'medium-landscape'}
                 set(groot, 'defaultTextFontSize',     15);
                 set(groot, 'defaultAxesFontSize',     15);
+                set(groot, 'defaultTextboxshapeFontSize', 14);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -182,6 +196,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'large', 'large-landscape'}
                 set(groot, 'defaultTextFontSize',     16);
                 set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -195,6 +210,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'xl', 'xl-landscape', 'extra-large', 'extra-large-landscape'}
                 set(groot, 'defaultTextFontSize',     16);
                 set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -208,6 +224,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'small-protrait'}
                 set(groot, 'defaultTextFontSize',      14);
                 set(groot, 'defaultAxesFontSize',      14);
+                set(groot, 'defaultTextboxshapeFontSize', 13);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -221,6 +238,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'medium-portrait'}
                 set(groot, 'defaultTextFontSize',     15);
                 set(groot, 'defaultAxesFontSize',     15);
+                set(groot, 'defaultTextboxshapeFontSize', 14);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -234,6 +252,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'large-portrait'}
                 set(groot, 'defaultTextFontSize',     16);
                 set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultFigureUnits',      'centimeters');
@@ -247,6 +266,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'small-square'}
                 set(groot, 'defaultTextFontSize',      14);
                 set(groot, 'defaultAxesFontSize',      14);
+                set(groot, 'defaultTextboxshapeFontSize', 13);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -260,6 +280,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'square', 'medium-square'}
                 set(groot, 'defaultTextFontSize',      15);
                 set(groot, 'defaultAxesFontSize',      15);
+                set(groot, 'defaultTextboxshapeFontSize', 14);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -273,6 +294,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'large-square'}
                 set(groot, 'defaultTextFontSize',      16);
                 set(groot, 'defaultAxesFontSize',      16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultAxesLineWidth',      2);
                 set(groot, 'defaultLineLineWidth',      2);
                 set(groot, 'defaultFigureUnits',       'centimeters');
@@ -287,6 +309,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a5', 'a5-landscape'}
                 set(groot, 'defaultTextFontSize',     15);
                 set(groot, 'defaultAxesFontSize',     15);
+                set(groot, 'defaultTextboxshapeFontSize', 14);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
@@ -300,6 +323,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a5-portrait'}
                 set(groot, 'defaultTextFontSize',     15);
                 set(groot, 'defaultAxesFontSize',     15);
+                set(groot, 'defaultTextboxshapeFontSize', 14);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
@@ -313,6 +337,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a4', 'a4-landscape'}
                 set(groot, 'defaultTextFontSize',     16);
                 set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
@@ -326,6 +351,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a4-portrait'}
                 set(groot, 'defaultTextFontSize',     16);
                 set(groot, 'defaultAxesFontSize',     16);
+                set(groot, 'defaultTextboxshapeFontSize', 15);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
@@ -339,6 +365,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a3', 'a3-landscape'}
                 set(groot, 'defaultTextFontSize',     17);
                 set(groot, 'defaultAxesFontSize',     17);
+                set(groot, 'defaultTextboxshapeFontSize', 16);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
@@ -352,6 +379,7 @@ function [precall_default_groot] = set_default_groot(theme)
             case {'a3-portrait'}
                 set(groot, 'defaultTextFontSize',     17);
                 set(groot, 'defaultAxesFontSize',     17);
+                set(groot, 'defaultTextboxshapeFontSize', 16);
                 set(groot, 'defaultLineLineWidth',     2);
                 set(groot, 'defaultAxesLineWidth',     2);
                 set(groot, 'defaultAxesBox',          'on');
