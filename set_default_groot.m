@@ -109,6 +109,21 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesGridAlpha', 1);
                 set(groot, 'defaultAxesBox',       'on');
 
+            case 'paper-grey'
+                %% Set a light theme with default grey scale colourmap.
+                set(groot, 'defaultAxesColor',     [255, 255, 255] ./ 255);
+                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultFigureColor',   [255, 255, 255] ./ 255);
+                set(groot, 'defaultTextColor',     [  0,   0,   0] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [0, 0, 0] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [0, 0, 0] ./ 255);
+                set(groot, 'defaultAxesGridColor', [ 26,  26,  26] ./ 255);
+                set(groot, 'DefaultFigureColormap', gray);
+                set(groot, 'DefaultAxesColorOrder', gray(7))
+                set(groot, 'defaultAxesGridAlpha', 1);
+                set(groot, 'defaultAxesBox',       'on');
+
             case {'grey', 'gray'}
                 %% Set a grey theme.
                 set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
