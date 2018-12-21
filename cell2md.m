@@ -34,17 +34,18 @@ function [markdown_table] = cell2md(C, headers)
         add_header = true;
         % Get the length of each header.
         header_lengths = cellfun(@(x) length(x), headers);
-        % Construct header separator strings.
-        h_sep = arrayfun(@(x) strcat(pad(':', max(x-1, 4), 'right', '-'), ': |'), ...
-                         header_lengths,                                          ...
-                         'UniformOutput', false);
         % Calculate column widths, used to set consistent row length.
-        column_widths = cellfun(@(x,y,z) max([size(x,2), length(y), length(z)]), ...
-                                C, headers, h_sep);
+        min_h_sep_length = 5; %:---:
+        column_widths = cellfun(@(x,y) max([size(x,2), length(y), min_h_sep_length]) +2, ...
+                                C, headers);
+        % Construct header separator strings.
+        h_sep = arrayfun(@(x) strcat(pad(' :', max(x-3, 5), 'right', '-'), ': |'), ...
+                         column_widths,                                            ...
+                         'UniformOutput', false);
     else
         add_header =false;
         % Calculate column widths, used to set consistent row length.
-        column_widths = cellfun(@(x,y) max([size(x,2), length(y)]), ...
+        column_widths = cellfun(@(x,y) max([size(x,2), length(y)]) +2, ...
                                 C, headers);
     end
 
@@ -54,16 +55,21 @@ function [markdown_table] = cell2md(C, headers)
     markdown_table = [];
     for k = 1:numel(C)
         if add_header
-            hdr_sep_offset = max([1, floor((length(h_sep{k})-header_lengths(k))./2.0)]);
+            hdr_sep_offset = floor((length(h_sep{k})-header_lengths(k))./2.0);
             hdr_fmt = ['%' num2str(column_widths(k)-hdr_sep_offset) 's'];
             sep_fmt = ['%' num2str(column_widths(k)+1) 's'];
+
             table_header = strcat(table_header,                 ...
                                   sprintf(hdr_fmt, headers{k}), ...
                                   pad('|', hdr_sep_offset+1, 'left'));
             header_seperator =  strcat(header_seperator, sprintf(sep_fmt, h_sep{k}));
         end
-        clmn_fmt = ['%' num2str(column_widths(k)-size(C{k},2)+1) 's'];
-        markdown_table = strcat(markdown_table, C{k}, sprintf(clmn_fmt,  '|'));
+        clmn_offset_right = floor((column_widths(k)-size(C{k},2))./2.0);
+        clmn_offset_left = ceil((column_widths(k)-size(C{k},2))./2.0);
+%         clmn_fmt = ['%' num2str(clmn_offset) 's'];
+        markdown_table = strcat(markdown_table, ...
+                                char(pad(strip(string(C{k})), size(C{k},2) + clmn_offset_left, 'left')), ...
+                                pad('|', clmn_offset_right + 1, 'left'));
     end
 
     % Add initial pipes on each data row.
@@ -73,6 +79,7 @@ function [markdown_table] = cell2md(C, headers)
         % Add initial pipes on each header row.
         table_header = strcat('|', table_header);
         header_seperator =  strcat('|', header_seperator);
+
         % Concatenate header and data.
         markdown_table = [table_header;     ...
                           header_seperator; ...
