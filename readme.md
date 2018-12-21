@@ -50,11 +50,11 @@ Rescales data to a specified range.
 ### `colourmaps` contains a small collection function for generating colormaps
 
 
-#### [bluered](https://github.com/stuart-knock/matlab-tools/blob/master/bluered.m)
+#### [bluered](https://github.com/stuart-knock/matlab-tools/blob/master/colourmaps/bluered.m)
 Diverging, blue to red.
 
-#### [blues](https://github.com/stuart-knock/matlab-tools/blob/master/blues.m)
+#### [blues](https://github.com/stuart-knock/matlab-tools/blob/master/colourmaps/blues.m)
 Sequential, shades of blue.
 
-#### [yellowgreenblue](https://github.com/stuart-knock/matlab-tools/blob/master/yellowgreenblue.m)
+#### [yellowgreenblue](https://github.com/stuart-knock/matlab-tools/blob/master/colourmaps/yellowgreenblue.m)
 Yellow through green to blue.
