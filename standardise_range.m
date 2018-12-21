@@ -5,7 +5,7 @@
 %    [a, b] -- 2 element vector with the new range
 %
 % OUTPUT:
-%    data -- standardise data in the range [a, b]
+%    data   -- Standardised data in the range [a, b]
 %
 %
 % AUTHOR:
@@ -30,4 +30,4 @@ data = (data - min_val) / (max_val - min_val);
 data = data * (new_range(2) - new_range(1)) + new_range(1);
 
 
-end % function standardise_range
+end % function standardise_range()
