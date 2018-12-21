@@ -1,8 +1,8 @@
-%% Return a colormap array [m,3] -- sequential, shades of blue.
-%
+%% Return a colormap array [m,3] -- yellow through green to blue.
 %
 % ARGUMENTS:
 %    m -- number of colours in colormap.
+%    order -- ['fwd'|'rev'] ordering of returned colormap array.
 %
 % OUTPUT:
 %    c -- [m,3] colormap array.
@@ -18,9 +18,9 @@
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [c] = yellowgreenblue(m, mode)
+function [c] = yellowgreenblue(m, order)
     %% If number of colours (m) not specified, try setting from current colormap.
-    if nargin < 1
+    if nargin < 1 || isempty(m)
        f = get(groot, 'CurrentFigure');
        if isempty(f)
           m = size(get(groot, 'DefaultFigureColormap'), 1);
@@ -28,14 +28,12 @@ function [c] = yellowgreenblue(m, mode)
           m = size(f.Colormap, 1);
        end
     end
-    
-    if nargin < 2 
-        mode='dir';
+
+    if nargin < 2  || isempty(order)
+        order = 'fwd';
     end
 
-
     %% Basis colormap from http://colorbrewer2.org 
-   
     bcm = [255, 255, 217; ...
            237, 248, 177; ...
            199, 233, 180; ...
@@ -44,7 +42,7 @@ function [c] = yellowgreenblue(m, mode)
             29, 145, 192; ...
             34,  94, 168; ...
             37,  52, 148; ...
-            8,   29,  88; ...
+             8,  29,  88; ...
                              ] ./ 255.0;
 
     %% Number of colours in basis colormap.
@@ -55,8 +53,9 @@ function [c] = yellowgreenblue(m, mode)
 
     %% Linear interpolation of basis colormap.
     c = interp1(1:nc, bcm, 1:cstep:nc);
-    
-    if strcmp(mode, 'rev') % reverse colormap 
+
+    if strcmp(order, 'rev') % reverse colormap
         c = c(end:-1:1, :);
     end
+
 end % function yellowgreenblue()
