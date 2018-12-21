@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function data = standardise_range(data, new_range)
 
-if narging < 2
+if nargin < 2
     new_range = [0 1];
 end
 
