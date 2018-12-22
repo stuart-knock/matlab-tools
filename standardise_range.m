@@ -1,8 +1,8 @@
-%% Rescales data to a given range, defaults to [0, 1].
+%% Rescales data to a given inclusive range, defaults to [0, 1].
 %
 % ARGUMENTS: 
 %    data -- nD array in the range  [min value,  max value]
-%    new_range -- 2 element vector [min, max] with the new range.
+%    new_range -- 2 element vector [min, max] with the new (inclusive) range.
 %
 % OUTPUT:
 %    data -- Rescaled data in the range [min, max].
@@ -19,16 +19,20 @@
 
 function data = standardise_range(data, new_range)
     if nargin < 1 || isempty(data)
-        error(['PSL:' mfilename ':NoData'], ...
-               'You must specify data to standardise.');
+        error(['PSL:' mfilename ':BadArgs'], ...
+               'Argument 1, the data to standardise, must be provided.');
     end
     if nargin > 1 && ~isempty(new_range) && (numel(new_range) ~= 2)
-        error(['PSL:' mfilename ':BadRange'], ...
-               'new_range should be a two element vector.');
+        error(['PSL:' mfilename ':BadArgs'], ...
+               'Argument 2, new_range, must be a two element vector.');
     end
 
     min_val = min(data(:));
     max_val = max(data(:));
+    if min_val == max_val
+        error(['PSL:' mfilename ':UniformData'], ...
+              'Cannot standardise data consisting of only one value.');
+    end
 
     % Rescale to range [0,1]
     data = (data - min_val) / (max_val - min_val);
