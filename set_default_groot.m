@@ -87,8 +87,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 %% Set a dark theme.
                 set(groot, 'defaultFigureColor',   [ 31.875,  31.875,  31.875] ./ 255);
                 set(groot, 'defaultAxesColor',     [ 31.875,  31.875,  31.875] ./ 255);
-                set(groot, 'defaultAxesYColor',    [191.25,  191.25,  191.25]  ./ 255);
                 set(groot, 'defaultAxesXColor',    [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultAxesYColor',    [191.25,  191.25,  191.25]  ./ 255);
+                set(groot, 'defaultAxesZColor',    [191.25,  191.25,  191.25]  ./ 255);
                 set(groot, 'defaultTextColor',     [191.25,  191.25,  191.25]  ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [191.25, 191.25, 191.25] ./ 255);
                 set(groot, 'defaultTextboxshapeEdgeColor', [191.25, 191.25, 191.25] ./ 255);
@@ -99,8 +100,9 @@ function [precall_default_groot] = set_default_groot(theme)
             case 'light'
                 %% Set a light theme.
                 set(groot, 'defaultAxesColor',     [255, 255, 255] ./ 255);
-                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
                 set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesZColor',    [  0,   0,   0] ./ 255);
                 set(groot, 'defaultFigureColor',   [255, 255, 255] ./ 255);
                 set(groot, 'defaultTextColor',     [  0,   0,   0] ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [0, 0, 0] ./ 255);
@@ -112,8 +114,9 @@ function [precall_default_groot] = set_default_groot(theme)
             case 'paper-grey'
                 %% Set a light theme with default grey scale colourmap.
                 set(groot, 'defaultAxesColor',     [255, 255, 255] ./ 255);
-                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
                 set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesYColor',    [  0,   0,   0] ./ 255);
+                set(groot, 'defaultAxesZColor',    [  0,   0,   0] ./ 255);
                 set(groot, 'defaultFigureColor',   [255, 255, 255] ./ 255);
                 set(groot, 'defaultTextColor',     [  0,   0,   0] ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [0, 0, 0] ./ 255);
@@ -128,8 +131,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 %% Set a grey theme.
                 set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
-                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesZColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
@@ -141,8 +145,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 %% Set a winter (greys and winter colormap) theme.
                 set(groot, 'defaultFigureColor',           [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesColor',             [ 64,  64,  64] ./ 255);
-                set(groot, 'defaultAxesYColor',            [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesXColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesYColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesZColor',            [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextColor',             [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
@@ -156,8 +161,9 @@ function [precall_default_groot] = set_default_groot(theme)
                 %% Set a winter-ocean (greys and blues colourmap) theme.
                 set(groot, 'defaultFigureColor',    [ 64,  64,  64] ./ 255);
                 set(groot, 'defaultAxesColor',      [ 64,  64,  64] ./ 255);
-                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesXColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesYColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesZColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextColor',      [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
                 set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
@@ -170,8 +176,9 @@ function [precall_default_groot] = set_default_groot(theme)
             case 'rand'
                 %% Set a random colour theme.
                 set(groot, 'defaultAxesColor',     [rand, rand, rand]);
-                set(groot, 'defaultAxesYColor',    [rand, rand, rand]);
                 set(groot, 'defaultAxesXColor',    [rand, rand, rand]);
+                set(groot, 'defaultAxesYColor',    [rand, rand, rand]);
+                set(groot, 'defaultAxesZColor',    [rand, rand, rand]);
                 set(groot, 'defaultFigureColor',   [rand, rand, rand]);
                 set(groot, 'defaultTextColor',     [rand, rand, rand]);
                 set(groot, 'defaultTextboxshapeColor',     [rand, rand, rand] ./ 255);
@@ -316,6 +323,20 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePosition',    [2 2 22 22]);
                 set(groot, 'defaultFigurePaperUnits',  'centimeters');
                 set(groot, 'defaultFigurePaperSize',   [22 22]);
+                set(groot, 'defaultFigurePaperType',   '<custom>');
+                set(groot, 'defaultFigurePaperOrientation',  'portrait');
+                set(groot, 'defaultFigurePaperPositionMode', 'auto');
+
+            case {'xl-square', 'extra-large-square'}
+                set(groot, 'defaultTextFontSize',      18);
+                set(groot, 'defaultAxesFontSize',      18);
+                set(groot, 'defaultTextboxshapeFontSize', 17);
+                set(groot, 'defaultAxesLineWidth',      2);
+                set(groot, 'defaultLineLineWidth',      2);
+                set(groot, 'defaultFigureUnits',       'centimeters');
+                set(groot, 'defaultFigurePosition',    [2 2 32 32]);
+                set(groot, 'defaultFigurePaperUnits',  'centimeters');
+                set(groot, 'defaultFigurePaperSize',   [32 32]);
                 set(groot, 'defaultFigurePaperType',   '<custom>');
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
