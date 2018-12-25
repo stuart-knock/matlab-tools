@@ -1,6 +1,6 @@
 %% Rescales data to a given inclusive range, defaults to [0, 1].
 %
-% ARGUMENTS: 
+% ARGUMENTS:
 %    data -- nD array in the range  [min value,  max value]
 %    new_range -- 2 element vector [min, max] with the new (inclusive) range.
 %
@@ -11,7 +11,7 @@
 %     Paula Sanz-Leon (2018-12-21).
 %
 % USAGE:
-%{ 
+%{
     
 %}
 % NOTES: See https://scikit-learn.org/stable/modules/preprocessing.html

@@ -2,13 +2,17 @@
 %
 % ARGUMENTS:
 %     FigureHandle -- Handle to figure window containing the plot.
-%     AxisHandle   -- Handle to the 3D plot to be acted upon. 
-%     AxisLabels   -- Cell of strings specifying axis labels, 
-%                     defaults to existing labels.  
-% 
-% OUTPUT: 
-%     FigureHandle -- Handle to figure window containing the plot. 
-%     AxisHandle   -- Handle to the 3D plot that was acted upon. 
+%     AxisHandle   -- Handle to the 3D plot to be acted upon.
+%     AxisLabels   -- Cell of strings specifying axis labels,
+%                     defaults to existing labels.
+%
+% OUTPUT:
+%     FigureHandle -- Handle to figure window containing the plot.
+%     AxisHandle   -- Handle to the 3D plot that was acted upon.
+%
+% AUTHOR:
+%     Michael Robbins (pre-2010) - original name Plot3AxisAtOrigin().
+%     Stuart A. Knock (2010-03-26).
 %
 % USAGE:
 %{
@@ -22,23 +26,18 @@
     subplot(2,2,4)
     axis_to_origin(FigureHandle, AxisHandle, {'Larry','Mo','Curly'});
 %}
-%
-% MODIFICATION HISTORY:
-%     SAK(26-03-2010) -- Modified from Michael Robbins' Plot3AxisAtOrigin(). 
-%     SAK(29-03-2010) -- Added AxisHandle arg for figures using subplot etc.
-%                        Other minor modifications and bug fixes.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%
-function [FigureHandle AxisHandle] = axis_to_origin(FigureHandle, AxisHandle, AxisLabels)
+function [FigureHandle, AxisHandle] = axis_to_origin(FigureHandle, AxisHandle, AxisLabels)
     %% Set defaults for any argument that weren't specified
-    if nargin<1
+    if nargin<1 || isempty(FigureHandle)
         FigureHandle = gcf;
     end
-    if nargin<2
+    if nargin<2 || isempty(AxisHandle)
         AxisHandle = gca;
     end
-    if nargin<3
+    if nargin<3 || isempty(AxisHandle)
         % AxisLabels = {'{\bf X}','{\bf Y}','{\bf Z}'};
         AxisLabels = {['{\bf ' AxisHandle.XLabel.String '}'], ...
                       ['{\bf ' AxisHandle.YLabel.String '}'], ...
@@ -53,19 +52,19 @@ function [FigureHandle AxisHandle] = axis_to_origin(FigureHandle, AxisHandle, Ax
 
     hold on
     axis off
-    
+
     %% GET AXIS LIMITS
     Limits = [get(AxisHandle,'XLim') ; get(AxisHandle,'YLim') ; get(AxisHandle,'ZLim')];
     Limits(:,1) = min(Limits(:,1), 0);
     Limits(:,2) = max(Limits(:,2), 0);
     dL = diff(Limits.');
-    
+
     %% DRAW AXIS LINEs
     plot3(Limits(1,:), [0 0],   [0 0],   'Color', AxisHandle.XColor);
     plot3([0 0],   Limits(2,:), [0 0],   'Color', AxisHandle.YColor);
     plot3([0 0],   [0 0],   Limits(3,:), 'Color', AxisHandle.ZColor);
     axis tight
-%%%keyboard 
+%%%keyboard
     CurrentDAR = daspect;
     TickLength = mean(dL(CurrentDAR==1))./84;
 
@@ -112,26 +111,26 @@ function [FigureHandle AxisHandle] = axis_to_origin(FigureHandle, AxisHandle, Ax
     text(-3.*Xoff.*oY, Y,  zY,           YL, 'HorizontalAlignment', 'Center');
     text(-3.*Xoff.*oZ, zZ, Z,            ZL, 'HorizontalAlignment', 'Center');
 
-    if XLscaling,
+    if XLscaling
         text(Limits(1,2)+3*Xoff, 0, 0, [AxisLabels{1} ' (\times10^{' num2str(XLscaling) '})'], 'HorizontalAlignment', 'Center')
     else
         text(Limits(1,2)+3*Xoff, 0, 0, AxisLabels{1}, 'HorizontalAlignment', 'Center')
     end
-    
-    if YLscaling,
+
+    if YLscaling
         text(0, Limits(2,2)+3*Yoff, 0, [AxisLabels{2} ' (\times10^{' num2str(YLscaling) '})'], 'HorizontalAlignment', 'Center')
     else
         text(0, Limits(2,2)+3*Yoff, 0, AxisLabels{2}, 'HorizontalAlignment', 'Center')
     end
-    
-    if ZLscaling,
+
+    if ZLscaling
         text(0, 0, Limits(3,2)+3*Zoff, [AxisLabels{3} ' (\times10^{' num2str(ZLscaling) '})'], 'HorizontalAlignment', 'Center')
     else
         text(0, 0, Limits(3,2)+3*Zoff, AxisLabels{3}, 'HorizontalAlignment', 'Center')
     end
 
     %% RESET HOLD STATE
-    if ~InitialHoldState,
+    if ~InitialHoldState
         hold off
     end
 

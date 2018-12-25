@@ -5,7 +5,7 @@
 %  successive dimensions...(TODO: SHOULD GENERALISE).
 %
 % ARGUMENTS:
-%     x -- time series in column vectors [time, n], 
+%     x -- time series in column vectors ['time', 'number of time-series'].
 %     delay_range -- range of delays to look at FORMAT => [begin step end]
 %     colourmaps -- cell array of strings indicating colourmaps to use,
 %                   defaults to the four *_basic colourmaps. If there are
@@ -16,7 +16,7 @@
 %     set_default_groot() -- Sets a default graphics theme from a predefined set.
 %     axis_to_origin() -- Give a 3D plot axes that pass through the origin.
 %     trajectory_colourmap() -- adds start and end colours to colourmap.
-%     standardise_range() -- .
+%     standardise_range() -- Rescales data to a specified inclusive range.
 %
 %     % requested colourmaps, default is:
 %     blue_basic(m)  -- Return a colormap [m, 3], simple blue, dark to light.
@@ -24,8 +24,11 @@
 %     green_basic(m) -- Return a colormap [m, 3], simple green, dark to light.
 %     black_basic(m) -- Return a colormap [m, 3], simple black, dark to light.
 %
-% OUTPUT: 
+% OUTPUT:
 %     A figure showing a series of embeddings for the given time-series...
+%
+% AUTHOR:
+%     Stuart A. Knock (2006-08-31).
 %
 % USAGE:
 %{
@@ -42,12 +45,6 @@
     %                               second on with just the final time-series.
     delayplot3(X, [], {'blues', 'yellowgreenblue', 'bluered'});
 %}
-%
-% MODIFICATION HISTORY:
-%     SAK(2006-08-31) -- Original.
-%     SAK(2008-11-03) -- fixed axis ranges for multiple un-normalised timeseries 
-%     SAK(2008-11-03) -- Added colour coded markers for visualization of time and velocity.
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -61,7 +58,7 @@ function [figure_handle, axes_handle] = delayplot3(x, delay_range, colourmaps)
         x = x(:);
     end
     if nargin < 2 || isempty(delay_range)
-        delay_range = [1 2 10]; 
+        delay_range = [1 2 10];
     end
     if nargin < 3 || isempty(colourmaps)
         colourmaps = {'blue_basic', 'red_basic', 'green_basic', 'black_basic'};
@@ -71,7 +68,7 @@ function [figure_handle, axes_handle] = delayplot3(x, delay_range, colourmaps)
     colourmaps = cellfun(@str2func, colourmaps, 'UniformOutput', false);
 
     number_of_colours = min([numel(colourmaps) size(x, 2)]);
-    
+
     tpts = size(x, 1);
 
     Xmin = min(x(:));
@@ -80,7 +77,7 @@ function [figure_handle, axes_handle] = delayplot3(x, delay_range, colourmaps)
     AxisMin = sign(Xmin)*(sqrt(3*Xmin^2));
     AxisMax = sign(Xmax)*(sqrt(3*Xmax^2));
 
-    % 
+    % Set a theme
     [precall_default_groot] = set_default_groot({'dark', 'xl-square'});
     figure_handle = figure;
 

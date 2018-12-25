@@ -4,7 +4,7 @@
 %  embedding(2D).
 %
 % ARGUMENTS:
-%     x -- time series in column vectors [time, n]
+%     x -- time series in column vectors ['time', number of time-series].
 %     colourmaps -- cell array of strings indicating colourmaps to use,
 %                   defaults to the four *_basic colourmaps. If there are
 %                   more time-series provided than colourmaps, then the
@@ -15,7 +15,7 @@
 % REQUIRES:
 %     set_default_groot() -- Sets a default graphics theme from a predefined set.
 %     trajectory_colourmap() -- adds start and end colours to colourmap.
-%     standardise_range() -- .
+%     standardise_range() -- Rescales data to a specified inclusive range.
 %
 %     % requested colourmaps, default is:
 %     blue_basic(m)  -- Return a colormap [m, 3], simple blue, dark to light.
@@ -23,9 +23,12 @@
 %     green_basic(m) -- Return a colormap [m, 3], simple green, dark to light.
 %     black_basic(m) -- Return a colormap [m, 3], simple black, dark to light.
 %
-% OUTPUT: 
+% OUTPUT:
 %     A figure showing a time-series embedded against its own 1st and 2nd
 %     derivatives.
+%
+% AUTHOR:
+%     Stuart A. Knock (2006-04-03).
 %
 % USAGE:
 %{
@@ -41,11 +44,8 @@
     %                               first one with the first three time series;
     %                               second on with just the final time-series.
     derivplot(X, {'blues', 'yellowgreenblue', 'bluered'});
-    
+
 %}
-%
-% MODIFICATION HISTORY:
-%     SAK(2006-04-03) -- Original.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -81,8 +81,7 @@ function [figure_handle, axes_handle] = derivplot(x, colourmaps, standardise_der
     colourmaps = cellfun(@str2func, colourmaps, 'UniformOutput', false);
     number_of_colours = min([numel(colourmaps) size(x, 2)]);
 
-
-    % 
+    % Set a theme
     [precall_default_groot] = set_default_groot({'dark', 'xl-square'});
     figure_handle = figure;
 
@@ -150,56 +149,3 @@ function [figure_handle, axes_handle] = derivplot(x, colourmaps, standardise_der
     end
 
 end %function derivplot()
-
-
-
-
-
-
-
-
-
-
-
-%% Plot time-series embedded(2D) against its own derivative.
-%
-%  Exploratory tool for determining(getting a feel for) a
-%  given time-series' embedding(2D)...
-%
-% ARGUMENTS:
-%           x -- time series of interest
-%           r -- vector of the epochs you want to look at 
-%
-% OUTPUT: 
-%           A figure showing a time-serie embedded against 
-%           its own derivative...
-%
-% USAGE:
-%
-% MODIFICATION HISTORY:
-%     SAK(2006-04-03) -- Original.
-%
-
-
-% function derivplot(x,r)
-%     %% Set any argument that weren't specified
-%     if nargin < 1
-%         error(['SAK:' mfilename ':BadArgs'], ...
-%               'you MUST at least provide a time series');
-%     end
-%     if nargin < 2
-%         r = 1:size(x, 2); 
-%     end
-
-%     %% Step through with ANYKEY one epoch at a time
-%     for j = r
-%         figure(222)
-%         plot(x(1:end-1, j), x(2:end, j) - x(1:end-1, j), '.');
-%         xlabel('Time-Series');
-%         ylabel('Derivative');
-%         title(strcat('Epoch  = ', ' ', num2str(j)));
-%         axis equal;
-%         pause
-%     end
-
-% end %function derivplot()

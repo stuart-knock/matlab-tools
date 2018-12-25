@@ -10,7 +10,7 @@
 %             complete set of default groot values. The latter case is primarily
 %             intended for use in resetting to a pre-call state.
 %
-%  OUTPUT: 
+%  OUTPUT:
 %    precall_default_groot -- a struct containing default groot values that were
 %                             set before calling this function. When calling with
 %                             a predefined theme (eg. 'dark') you must capture

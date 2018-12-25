@@ -4,7 +4,7 @@
 %  embedding(3D).
 %
 % ARGUMENTS:
-%     x -- time series in column vectors [time, n]
+%     x -- time series in column vectors ['time', number of time-series].
 %     colourmaps -- cell array of strings indicating colourmaps to use,
 %                   defaults to the four *_basic colourmaps. If there are
 %                   more time-series provided than colourmaps, then the
@@ -16,7 +16,7 @@
 %     set_default_groot() -- Sets a default graphics theme from a predefined set.
 %     axis_to_origin() -- Give a 3D plot axes that pass through the origin.
 %     trajectory_colourmap() -- adds start and end colours to colourmap.
-%     standardise_range() -- .
+%     standardise_range() -- Rescales data to a specified inclusive range.
 %
 %     % requested colourmaps, default is:
 %     blue_basic(m)  -- Return a colormap [m, 3], simple blue, dark to light.
@@ -24,9 +24,12 @@
 %     green_basic(m) -- Return a colormap [m, 3], simple green, dark to light.
 %     black_basic(m) -- Return a colormap [m, 3], simple black, dark to light.
 %
-% OUTPUT: 
+% OUTPUT:
 %     A figure showing a time-series embedded against its own 1st and 2nd
 %     derivatives.
+%
+% AUTHOR:
+%     Stuart A. Knock (2006-04-03).
 %
 % USAGE:
 %{
@@ -42,11 +45,8 @@
     %                               first one with the first three time series;
     %                               second on with just the final time-series.
     derivplot3(X, {'blues', 'yellowgreenblue', 'bluered'});
-    
+
 %}
-%
-% MODIFICATION HISTORY:
-%     SAK(2006-04-03) -- Original.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -86,7 +86,7 @@ function [figure_handle, axes_handle] = derivplot3(x, colourmaps, standardise_de
     colourmaps = cellfun(@str2func, colourmaps, 'UniformOutput', false);
     number_of_colours = min([numel(colourmaps) size(x, 2)]);
 
-    % 
+    % Set a theme
     [precall_default_groot] = set_default_groot({'dark', 'xl-square'});
     figure_handle = figure;
 
@@ -159,35 +159,3 @@ function [figure_handle, axes_handle] = derivplot3(x, colourmaps, standardise_de
     end
 
 end %function derivplot3()
-
-
-
-
-
-
-% function derivplot3(x,r)
-%     %% Set any argument that weren't specified
-%     if nargin < 1,
-%         error(['SAK:' mfilename ':BadArgs'], ...
-%               'you MUST at least provide a time series');
-%     end
-%     if nargin < 2,
-%         r = 1:size(x, 2); 
-%     end
- 
-%     %% Step through with ANYKEY one epoch at a time
-%     for series_index = r, 
-%       figure(333), 
-%       %plot3(x(1:end-1, series_index), x(2:end, series_index) - x(1:end-1, series_index), 1:(size(x,2)-1)); %time
-%       %plot3(x(1:end-1, series_index), x(2:end, series_index) - x(1:end-1, series_index), mod(1:(size(x,2)-1),23)+1,'.'); %time, mod(cycle)
-%       dx = x(2:end, series_index) - x(1:end-1, series_index);
-%       plot3(x(1:end-2, series_index), dx(1:end-1), dx(2:end) - dx(1:end-1)); %derivderiv
-%       xlabel('Time-Series');
-%       ylabel('Derivative');
-%       zlabel('2nd Derivative')
-%       title(strcat('Epoch  = ',' ',num2str(series_index))); 
-%       %axis equal; 
-%       pause, 
-%     end
-
-% end %function derivplot3()
