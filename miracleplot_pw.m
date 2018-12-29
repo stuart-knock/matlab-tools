@@ -195,3 +195,24 @@ function [figure_handle] = miracleplot_pw(time,data,pw,frequency,periodspec,spee
     set_default_groot(precall_default_groot);
 
 end % function [figure_handle] = miracleplot_pw()
+
+function [wvlt] = cmw(fs, fb, foi, tw)
+% Complex Morlet wavelet 
+% This function is a dummy function to have wavelets at 
+% different scales shown in the plots. The wavelet produced by this function
+% does not exactly correspond to the wavlet used by cwt() in cwtspectra()
+
+% Centre wavelet at t=0
+half_point = tw/2; % in seconds
+time  = -half_point:1/fs:half_point;
+
+% Complex sine wave
+sine_wave = exp(1i*2*pi*foi.*time);
+
+% Gaussian window
+s = fb/(2*pi);
+gaus_win  = exp((-time.^2) ./ (2*s^2));
+
+wvlt = sine_wave.*gaus_win;
+
+end % function cmw()
