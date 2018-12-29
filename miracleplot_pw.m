@@ -6,7 +6,7 @@
 %    data   -- <description>
 %    pw     -- <description>
 %    frequency  -- <description>
-%    periodspec -- <description>
+%    fs, wvl_fc, wvl_fb -- <description>
 %    speed  -- (optional) <description>
 %    foi  -- (optional) <description>
 %    accumulate  -- (optional) <description>
@@ -25,12 +25,17 @@ X = X + sin((1:((10-1)/2048):10) .* (0:(10*2*pi/2048):(10*2*pi)));
 t = 0:(1/1024):2;
 
 % Calculate the Continuous-Wavelet-Transform
-frequency = [4,104,125];
-periodspec = [1024, 2, 5];
-[c time f pwr pw tw fw] = cwtspectra(X,frequency, periodspec,'p',0);
+frequency = linspace(4,104,125);
+fs = 1024;
+wvl_fc =  2;
+wvl_fb =  5;
+scaling = 1;
+display_flag = true;
+[c, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(X, fs, frequency, wvl_fc, wvl_fb ,display_flag, scaling);
 
+periodspec = [fs, wvl_fc, wvl_fb];
 %Movie plot
-[figure_handle] = miracleplot_pw(t,X,pw,f,periodspec,4,[21 50 84], false)
+[figure_handle] = miracleplot_pw(time,X,norm_pwr, f, periodspec, 4, [21 50 84], false)
 
 %}
 % MODIFICATION HISTORY:
@@ -103,11 +108,11 @@ function [figure_handle] = miracleplot_pw(time,data,pw,frequency,periodspec,spee
     power_spectrum_ylim = [(log10(min_power) + 0.2 * (log10(max_power) - log10(min_power) )), log10(max_power)];
     axis(axes_312, [power_spectrum_xlim power_spectrum_ylim]);
     xlabel(axes_312, 'Frequency (Hz) ');
-    ylabel(axes_312, 'log_{10} Power (a.u.)');
+    ylabel(axes_312, ' Power (a.u.)');
     hold(axes_312, 'on')
     power_line = plot(axes_312,        ...
                       frequency,       ...
-                      log10(pw(:, 1)), ...
+                      pw(:, 1), ...
                       'Color', MAP(1, :));
 
     %Initialise bottom panel with spectrogram.
