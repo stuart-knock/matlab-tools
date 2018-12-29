@@ -5,8 +5,9 @@
 %     data          -- time series 1 x timepoints
 %     fs            -- sampling frequency in Hz. 
 %     freq_vec      -- frequency support for the cwt
-%     wvl_fc        -- central frequency of the wavelet
-%     wvl_fb        -- frequency bandwidth of the wavelet
+%     wvl_fc        -- central frequency of the mother wavelet
+%     wvl_fb        -- frequency bandwidth of the mother wavelet
+%     
 % REQUIRES:
 %
 %
@@ -18,8 +19,12 @@
 %     Paula Sanz-Leon - 2018
 % USAGE:
 %{
+
+load kobe
+[cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(kobe, 1000);
     
 %}
+% NOTES: Tested with Matlab R2018b
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -33,9 +38,9 @@ function [cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(data, fs, 
     if (nargin < 3)
         display_flag = true; 
         scaling  = 1; 
-        freq_vec = linspace(0, fs/4, length(data)/2);
-        wvl_fc = fs/10;
-        wvl_fb = fs/8; 
+        freq_vec = linspace(fs/100, fs/10, 128);
+        wvl_fc = 1;
+        wvl_fb = 10; 
     end
 
     
@@ -60,14 +65,10 @@ function [cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(data, fs, 
     % Compose name of Morlet mother wavelet as per wavelet properties
     mother_wavelet = ['cmor',num2str(wvl_fb),'-',num2str(wvl_fc)];
     
-    %preassign c and s
-    cwt_coeffs = zeros(length(f), length(data));
-    s = zeros(length(f), length(data));
-    
-    %This syntax calls the 'old' version of CWT --> wavelet.internal.cwt
+    % This syntax calls the 'old' version of CWT --> wavelet.internal.cwt
     cwt_coeffs = cwt(data, scales, mother_wavelet);
 
-    %reverse the order of the coefficients
+    % Reverse the order of the coefficients
     cwt_coeffs = cwt_coeffs(end:-1:1,:);
     
     
@@ -81,25 +82,46 @@ function [cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(data, fs, 
     %draw the images and the plots
     if display_flag
         figure_handle = figure;
-        ax(1) = subplot(311);
-        ax(2) = subplot(312);
-        ax(3) = subplot(313);
+        ax(1) = subplot(411);
+        ax(2) = subplot(412);
+        ax(3) = subplot(413);
+        ax(4) = subplot(414);
 
         for this_ax = 1:length(ax)
             ax(this_ax).Box = 'on';
         end
 
-        plot(ax(1), time, data); 
-        ax(1).XLabel.String = 'Time [s]'; 
+        plot(ax(1), time, data, 'color', [0.7 0.7 0.7]); 
+        ax(1).XLabel.String = ''; 
         ax(1).YLabel.String = 'Amplitude [a.u.]';
+        ax(1).XLim = [time(1) time(end)];
 
-        plot(ax(3), time, av_pwr); 
-        ax(3).XLabel.String = 'Time [s]'; 
-        ax(3).YLabel.String = 'Normalised Power [a.u.]';
+        plot(ax(4), time, av_pwr, 'color', 'k'); 
+        ax(4).XLabel.String = 'Time [s]'; 
+        ax(4).YLabel.String = 'Normalised Power [a.u.]';
+        ax(4).XLim = [time(1) time(end)];
 
-        image(ax(2), time, f, norm_pwr/scaling); 
-        ax(2).XLabel.String = 'Time [s]'); 
+        imagesc(ax(2), time, f, norm_pwr/scaling); 
+        ax(2).YDir = 'normal';
+        ax(2).XLabel.String = ''; 
         ax(2).YLabel.String = 'Frequency [Hz] ';
+        ax(2).Colormap = yellowgreenblue(256, 'rev');
+        
+        hold(ax(2), 'on')
+        contour(ax(2), time, f,norm_pwr/scaling, 'LineStyle','none',...
+                                                 'LineColor',[0 0 0],...
+                                                 'Fill','on')
+        
+        imagesc(ax(3), time, f, log10(norm_pwr/scaling)); 
+        ax(3).YDir = 'normal';
+        ax(3).XLabel.String = ''; 
+        ax(3).YLabel.String = 'Frequency [Hz] ';
+        ax(3).Colormap = yellowgreenblue(256, 'rev');
+        
+        hold(ax(3), 'on')
+        contour(ax(3), time, f, log10(norm_pwr/scaling), 'LineStyle','none',...
+                                                 'LineColor',[0 0 0],...
+                                                 'Fill','on')
       
     end
     
