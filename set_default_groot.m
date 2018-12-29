@@ -123,7 +123,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultTextboxshapeEdgeColor', [0, 0, 0] ./ 255);
                 set(groot, 'defaultAxesGridColor', [ 26,  26,  26] ./ 255);
                 set(groot, 'DefaultFigureColormap', gray);
-                set(groot, 'DefaultAxesColorOrder', gray(7))
+                set(groot, 'DefaultAxesColorOrder', gray(7));
                 set(groot, 'defaultAxesGridAlpha', 1);
                 set(groot, 'defaultAxesBox',       'on');
 
@@ -141,6 +141,22 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesBox',        'off');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
+            case {'grey-ygb', 'grey-yellow-green-blue'}
+                %% Set a winter (greys and winter colormap) theme.
+                set(groot, 'defaultFigureColor',           [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesColor',             [ 64,  64,  64] ./ 255);
+                set(groot, 'defaultAxesXColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesYColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesZColor',            [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextColor',             [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeColor',     [128, 128, 128] ./ 255);
+                set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
+                set(groot, 'defaultAxesGridColor',         [ 96,  96,  96] ./ 255);
+                set(groot, 'DefaultFigureColormap', yellowgreenblue([], 'rev'));
+                set(groot, 'DefaultAxesColorOrder', yellowgreenblue( 7, 'rev'));
+                set(groot, 'defaultAxesBox',        'off');
+                set(groot, 'defaultFigureInvertHardcopy',    'off');
+
             case {'winter'}
                 %% Set a winter (greys and winter colormap) theme.
                 set(groot, 'defaultFigureColor',           [ 64,  64,  64] ./ 255);
@@ -153,7 +169,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesGridColor',         [ 96,  96,  96] ./ 255);
                 set(groot, 'DefaultFigureColormap', winter);
-                set(groot, 'DefaultAxesColorOrder', winter(7))
+                set(groot, 'DefaultAxesColorOrder', winter(7));
                 set(groot, 'defaultAxesBox',        'off');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
@@ -169,7 +185,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultTextboxshapeEdgeColor', [128, 128, 128] ./ 255);
                 set(groot, 'defaultAxesGridColor',  [ 96,  96,  96] ./ 255);
                 set(groot, 'DefaultFigureColormap', blues);
-                set(groot, 'DefaultAxesColorOrder', blues(7))
+                set(groot, 'DefaultAxesColorOrder', blues(7));
                 set(groot, 'defaultAxesBox',        'off');
                 set(groot, 'defaultFigureInvertHardcopy',    'off');
 
