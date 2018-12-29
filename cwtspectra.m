@@ -1,12 +1,12 @@
-%% Calculates cwt power spectrum based on cwt prior to R2016b
+%% Calculates cwt power spectrum based on cwt prior to R2016b and using a complex Morlet wavlet
 %
 %
 % ARGUMENTS:
 %     data          -- time series 1 x timepoints
 %     fs            -- sampling frequency in Hz. 
 %     freq_vec      -- frequency support for the cwt
-%     wvl_fc        -- central frequency of the mother wavelet
-%     wvl_fb        -- frequency bandwidth of the mother wavelet
+%     wvl_fc        -- central frequency of the mother Morlet wavelet
+%     wvl_fb        -- bandwidth parameter of the mother Morlet wavelet
 %     
 % REQUIRES:
 %
@@ -21,7 +21,17 @@
 %{
 
 load kobe
-[cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(kobe, 1000);
+[cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw, varargout] = cwtspectra(kobe, 1000);
+
+% The complex morlet wavelet in the frequency domain is  
+cmor(f) = (pi*Fb)^{-0.5}*exp(2*i*pi*Fc*f)*exp(-(f^2)/Fb)
+
+fb: controls the decay in the time domain and the corresponding energy spread 
+    (bandwidth) in the frequency domain. **FB is the inverse of the variance** in 
+    the frequency domain. Increasing FB makes the wavelet energy more concentrated 
+    around the center frequency and results in slower decay of the wavelet in the 
+    time domain. Decreasing FB results in faster decay of the wavelet in the 
+    time domain and less energy spread in the frequency domain.
     
 %}
 % NOTES: Tested with Matlab R2018b
@@ -35,12 +45,11 @@ function [cwt_coeffs, time, f, av_pwr, norm_pwr, tw, fw] = cwtspectra(data, fs, 
             'you MUST at least provide a time series and a sampling frequency.');
     end
 
-    if (nargin < 3)
+    if (nargin < 4)
         display_flag = true; 
         scaling  = 1; 
-        freq_vec = linspace(fs/100, fs/10, 128);
         wvl_fc = 1;
-        wvl_fb = 10; 
+        wvl_fb = 1; 
     end
 
     
