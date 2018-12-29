@@ -81,7 +81,7 @@ function [figure_handle] = miracleplot_pw(time,data,pw,frequency,periodspec,spee
 
     tw = fix( (tw/(time(2)-time(1))) /2 );
     fw = fw/2 ;
-    lt = length(time);
+    len = length(time);
  
     MAP = colormap;
     cmap_step = size(MAP,1) / (length(pw) / speed);
@@ -167,8 +167,8 @@ function [figure_handle] = miracleplot_pw(time,data,pw,frequency,periodspec,spee
                      'LineWidth', 3);
             % foi_time_overlays(k) =                         ...
             %     plot(axes_311,                             ...
-            %          time(max(i-tw(k),1):min(i+tw(k),lt)), ...
-            %          data(max(i-tw(k),1):min(i+tw(k),lt)), ...
+            %          time(max(i-tw(k),1):min(i+tw(k),len)), ...
+            %          data(max(i-tw(k),1):min(i+tw(k),len)), ...
             %          'Color', thisfreqcolour);
         end
 
