@@ -11,8 +11,13 @@ Eg. `startup.m`, assuming repo was cloned to `~/Github/`:
 
 ```matlab
 %% Add directories to path at startup.
-%matlab-tools and all subpaths.
-addpath(genpath('~/GitHub/matlab-tools'), '-begin');
+%matlab-tools and all subpaths -- excluding .git/.
+mt_path = '~/GitHub/matlab-tools';
+all_mt_paths = genpath(mt_path);
+git_paths = regexp(all_mt_paths, [mt_path '/.git(/\w*)*:'], 'match');
+mt_path_nogit = replace(all_mt_paths, git_paths, '');
+addpath(mt_path_nogit, '-begin');
+clear mt_path all_mt_paths git_paths mt_path_nogit
 
 ```
 
