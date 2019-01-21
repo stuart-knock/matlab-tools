@@ -1,20 +1,51 @@
 %% Sets a default graphics theme based on predefined sets of default properties.
 %
-%  When setting a theme, a struct is returned containing a field for each groot
-%  default value as it was prior to the call to this function. This is to enable
-%  resetting to the pre-call state, so side effects can be prevented when used
-%  within a plotting function.
+%  When setting a theme, an onCleanup object is returned. Deleting this object
+%  will automatically reset groot default values as they were prior to the call
+%  to this function. So, if run within a function, side effects are prevented as
+%  the onCleanup object is automatically deleted on return from the function.
 %
 %  ARGUMENTS:
-%    theme -- a string indicating a predefined theme or a struct specifying a
-%             complete set of default groot values. The latter case is primarily
-%             intended for use in resetting to a pre-call state.
+%    theme -- a char vector or a cell array of char vectors specifying one of
+%             the predefined themes. Pre-defined themes have two components,
+%             either or both of which can be specified. One component sets
+%             colours, the other sizes:
+%
+%        Colour:
+%            'dark' -- Almost black background; very light grey text and lines.
+%            'light' -- White background; black text and lines.
+%            'paper-grey' -- Grey-scale colormap; black text and lines; white background.
+%            'grey' -- Dark grey background; light grey text and lines.
+%            'grey-ygb' -- Same as 'grey'; with yellow-green-blue colormap.
+%            'winter' -- Same as 'grey'; with winter colormap.
+%            'winter-ocean' -- Same as 'grey'; with blues colormap.
+%            'rand' -- sets random colours, because, why not.
+%
+%        Size/Scaling:
+%            'small'  -- [16.18 10.0] cm, landscape.
+%            'medium' -- [24.27 15.0] cm, landscape.
+%            'large'  -- [32.36 20.0] cm, landscape.
+%            'XL'     -- [48.54 30.0] cm, landscape.
+%            'small-portrait'  -- [10.0 16.18] cm.
+%            'medium-portrait' -- [15.0 24.27] cm.
+%            'large-portrait'  -- [20.0 32.36] cm.
+%            'XL-portrait'     -- [30.0 48.54] cm.
+%            'small-square'  -- [10.0 10.0] cm.
+%            'medium-square' -- [16.0 16.0] cm.
+%            'large-square'  -- [22.0 22.0] cm.
+%            'XL-square'     -- [32.0 32.0] cm.
+%            'a5' -- [21.0 14.8] cm, landscape.
+%            'a4' -- [29.7 21.0] cm, landscape.
+%            'a3' -- [42.0 29.7] cm, landscape.
+%            'a5-portrait' -- [14.8 21.0] cm.
+%            'a4-portrait' -- [21.0 29.7] cm.
+%            'a3-portrait' -- [29.7 42.0] cm.
+%
 %
 %  OUTPUT:
-%    precall_default_groot -- a struct containing default groot values that were
-%                             set before calling this function. When calling with
-%                             a predefined theme (eg. 'dark') you must capture
-%                             this output to be able to undo the changes.
+%    pdg_sentinel -- an onCleanup object, that once deleted will reset default
+%                    groot values to what they were before calling this function.
+%                    You must capture this output.
 %
 %  AUTHOR:
 %    Paula Sanz-Leon (2017-12-04).
@@ -23,24 +54,31 @@
 %  USAGE:
 %{
     %% Set a dark theme
-    [precall_default_groot] = set_default_groot('dark');
+    [pdg_sentinel] = set_default_groot({'dark', 'medium'});
 
     %plot things using this theme
 
-    %% Reset to the default values from before the first call.
-    set_default_groot(precall_default_groot);
+    %% When used within a function, the pdg_sentinel will be deleted when it
+    % goes out of scope, such as retuning from the function, automatically
+    % running the clean-up. However, within a script or when called at a
+    % command prompt, pdg_sentinel must be deleted manually to reset to the
+    % default groot values from before the call.
+    clear pdg_sentinel
 
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [precall_default_groot] = set_default_groot(theme)
+function [pdg_sentinel] = set_default_groot(theme)
+    % A theme must be provided, allows struct for internal clean-up call purposes only.
     if nargin < 1 || isempty(theme) || ~(isstruct(theme) || ischar(theme) || iscell(theme)) %
         error(['SAK:' mfilename ':BadArgs'], 'You must specify a theme.')
     end
 
-    if (ischar(theme) || iscell(theme)) && nargout < 1 %&& ~ismember(theme, {'default', 'matlab'})
-        error(['SAK:' mfilename ':NoPreStateAssignment'], ...
-              'The pre-call state must be captured to enable undoing changes.');
+    % If setting a new theme, onCleanup object (pdg_sentinel) must be captured.
+    if ~isstruct(theme) && nargout < 1
+        error(['SAK:' mfilename ':UncapturedOutput'], ...
+              ['You must capture the pdg_sentinel return arg. That is:\n', ...
+               '    [pdg_sentinel] = set_default_groot(<theme>);'])
     end
 
     % Capture the pre-call default groot state.
@@ -66,6 +104,9 @@ function [precall_default_groot] = set_default_groot(theme)
         end
         return
     end %isstruct(theme)
+
+    % Define a clean-up function
+    pdg_sentinel = onCleanup(@() set_default_groot(precall_default_groot));
 
     %Meta themes
     if ischar(theme)
@@ -111,7 +152,7 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultAxesGridAlpha', 1);
                 set(groot, 'defaultAxesBox',       'on');
 
-            case 'paper-grey'
+            case {'paper-grey', 'paper-gray'}
                 %% Set a light theme with default grey scale colourmap.
                 set(groot, 'defaultAxesColor',     [255, 255, 255] ./ 255);
                 set(groot, 'defaultAxesXColor',    [  0,   0,   0] ./ 255);
@@ -356,7 +397,6 @@ function [precall_default_groot] = set_default_groot(theme)
                 set(groot, 'defaultFigurePaperType',   '<custom>');
                 set(groot, 'defaultFigurePaperOrientation',  'portrait');
                 set(groot, 'defaultFigurePaperPositionMode', 'auto');
-
 
             case {'a5', 'a5-landscape'}
                 set(groot, 'defaultTextFontSize',     15);
